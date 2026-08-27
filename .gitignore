@@ -16,6 +16,7 @@ dist/
 build/
 coverage/
 *.tsbuildinfo
+frontend/test-results/
 
 # Local configuration and data
 .env

@@ -27,6 +27,7 @@ For API schemas see [contracts/api-contracts.md](contracts/api-contracts.md).
 
 ```bash
 cd /home/labuser/Desktop/L1_Support_Bot
+unset VIRTUAL_ENV
 
 # Backend
 cd backend && uv sync && cp .env.example .env
@@ -55,6 +56,7 @@ CORS_ALLOWED_ORIGINS=http://localhost:5173
 
 ```bash
 # Start services
+unset VIRTUAL_ENV
 cd backend && uv run uvicorn l1_support_bot.interface.api.main:app --reload --port 8000
 cd frontend && npm run dev
 
@@ -105,7 +107,8 @@ curl -X DELETE http://localhost:8000/api/v1/documents/{document_id}
 
 ```bash
 # Start background worker (separate terminal)
-cd backend && uv run python -m worker.runner
+unset VIRTUAL_ENV
+cd backend && uv run python -m l1_support_bot.worker.runner
 
 # Upload a FLEXCUBE PDF and watch status (US2 scenario 1–2)
 curl -X POST http://localhost:8000/api/v1/documents/upload \

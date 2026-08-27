@@ -14,7 +14,6 @@ from typing import Any
 from l1_support_bot.domain.models.configuration import EmbeddingConfig
 from l1_support_bot.infrastructure.embedding.http_embedding import HttpEmbeddingAdapter
 
-
 TOKEN = re.compile(r"[a-z0-9]+")
 IDENTIFIER = re.compile(r"\b[A-Z]{2,5}\d{3,5}\b")
 
@@ -48,7 +47,11 @@ def rank(
             score = dense
         else:
             lexical = lexical_score(question, str(chunk["text"]))
-            exact = 1.0 if identifiers and identifiers.intersection(IDENTIFIER.findall(str(chunk["text"]))) else 0.0
+            exact = (
+                1.0
+                if identifiers and identifiers.intersection(IDENTIFIER.findall(str(chunk["text"])))
+                else 0.0
+            )
             score = 0.7 * dense + 0.3 * lexical + exact
         scored.append((str(chunk["id"]), score))
     return [chunk_id for chunk_id, _ in sorted(scored, key=lambda item: item[1], reverse=True)]
@@ -99,7 +102,11 @@ async def evaluate(path: Path, endpoint: str, model: str, dimensions: int) -> di
             )
             expected = set(question["relevant_chunk_ids"])
             rank_position = next(
-                (position for position, chunk_id in enumerate(ranked_ids, 1) if chunk_id in expected),
+                (
+                    position
+                    for position, chunk_id in enumerate(ranked_ids, 1)
+                    if chunk_id in expected
+                ),
                 None,
             )
             top_chunk = next((chunk for chunk in chunks if str(chunk["id"]) == ranked_ids[0]), None)

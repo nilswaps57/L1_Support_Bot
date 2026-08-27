@@ -30,6 +30,9 @@ from l1_support_bot.infrastructure.persistence.database import create_engine_and
 from l1_support_bot.infrastructure.persistence.sqlalchemy.chunk_repository import (
     SqlAlchemyChunkRepository,
 )
+from l1_support_bot.infrastructure.persistence.sqlalchemy.configuration_repository import (
+    SqlAlchemyConfigurationRepository,
+)
 from l1_support_bot.infrastructure.persistence.sqlalchemy.document_repository import (
     SqlAlchemyDocumentRepository,
 )
@@ -38,9 +41,6 @@ from l1_support_bot.infrastructure.persistence.sqlalchemy.feedback_repository im
 )
 from l1_support_bot.infrastructure.persistence.sqlalchemy.ingestion_job_repository import (
     SqlAlchemyIngestionJobRepository,
-)
-from l1_support_bot.infrastructure.persistence.sqlalchemy.configuration_repository import (
-    SqlAlchemyConfigurationRepository,
 )
 from l1_support_bot.infrastructure.retrieval.hybrid_retriever import HybridRetriever
 from l1_support_bot.infrastructure.session.in_memory_session_store import InMemorySessionStore

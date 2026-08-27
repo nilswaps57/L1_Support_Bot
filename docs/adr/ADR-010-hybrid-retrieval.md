@@ -1,5 +1,7 @@
 # ADR-010: Hybrid Retrieval Decision
 
+**Status:** Accepted for hybrid retrieval; reranking deferred
+
 ## Context
 
 FLEXCUBE questions include natural-language descriptions and exact identifiers such as task

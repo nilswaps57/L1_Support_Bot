@@ -23,7 +23,8 @@ async def evaluate(candidate: dict[str, Any], fixture: dict[str, Any]) -> dict[s
         endpoint=str(candidate["endpoint"]),
         dimensions=int(candidate["dimensions"]),
         index_compat_id=(
-            f"{candidate['provider']}:{candidate['model']}:{candidate.get('model_version', 'unknown')}:{candidate['dimensions']}"
+            f"{candidate['provider']}:{candidate['model']}:"
+            f"{candidate.get('model_version', 'unknown')}:{candidate['dimensions']}"
         ),
     )
     adapter = HttpEmbeddingAdapter()
@@ -41,8 +42,14 @@ async def evaluate(candidate: dict[str, Any], fixture: dict[str, Any]) -> dict[s
         )
         expected = set(question["relevant_chunk_ids"])
         ranked_ids = [fixture["chunks"][index]["id"] for index, _ in scored]
-        rank = next((position for position, item in enumerate(ranked_ids, 1) if item in expected), None)
-        top_chunk = next((chunk for chunk in fixture["chunks"] if chunk["id"] == ranked_ids[0]), None)
+        rank = next(
+            (position for position, item in enumerate(ranked_ids, 1) if item in expected),
+            None,
+        )
+        top_chunk = next(
+            (chunk for chunk in fixture["chunks"] if chunk["id"] == ranked_ids[0]),
+            None,
+        )
         rows.append({
             "recall_at_5": bool(expected.intersection(ranked_ids[:5])),
             "recall_at_10": bool(expected.intersection(ranked_ids[:10])),
