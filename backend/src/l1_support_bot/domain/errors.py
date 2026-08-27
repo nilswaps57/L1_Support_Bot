@@ -11,6 +11,9 @@ class ErrorCategory(StrEnum):
     INSUFFICIENT_EVIDENCE = "INSUFFICIENT_EVIDENCE"
     INCOMPATIBLE_INDEX = "INCOMPATIBLE_INDEX"
     DOCUMENT_IN_PROCESSING = "DOCUMENT_IN_PROCESSING"
+    DOCUMENT_CLEANUP_FAILED = "DOCUMENT_CLEANUP_FAILED"
+    DOCUMENT_NOT_DELETABLE = "DOCUMENT_NOT_DELETABLE"
+    RETRY_EXHAUSTED = "RETRY_EXHAUSTED"
 
 
 class DomainError(Exception):
@@ -26,6 +29,10 @@ class DomainError(Exception):
 class ValidationError(DomainError):
     category = ErrorCategory.VALIDATION
     code = "VALIDATION_ERROR"
+
+
+class CitationValidationError(ValidationError):
+    code = "INVALID_CITATION"
 
 
 class UnsupportedFileTypeError(ValidationError):
@@ -63,6 +70,13 @@ class ServiceUnavailableError(DomainError):
     code = "SERVICE_UNAVAILABLE"
 
 
+class RetryExhaustedError(ServiceUnavailableError):
+    code = "RETRY_EXHAUSTED"
+
+    def __init__(self) -> None:
+        super().__init__("The requested service remains unavailable after a safe retry.")
+
+
 class InsufficientEvidenceError(DomainError):
     category = ErrorCategory.INSUFFICIENT_EVIDENCE
     code = "INSUFFICIENT_EVIDENCE"
@@ -88,15 +102,77 @@ class IncompatibleIndexError(DomainError):
 class EmbeddingUnavailableError(ServiceUnavailableError):
     code = "EMBEDDING_UNAVAILABLE"
 
+    def __init__(
+        self, safe_message: str = "Embedding service is temporarily unavailable."
+    ) -> None:
+        super().__init__(safe_message)
+
 
 class VectorStoreUnavailableError(ServiceUnavailableError):
     code = "VECTOR_STORE_UNAVAILABLE"
+
+    def __init__(
+        self, safe_message: str = "Vector search is temporarily unavailable."
+    ) -> None:
+        super().__init__(safe_message)
 
 
 class LLMUnavailableError(ServiceUnavailableError):
     code = "LLM_UNAVAILABLE"
 
+    def __init__(
+        self, safe_message: str = "Answer generation is temporarily unavailable."
+    ) -> None:
+        super().__init__(safe_message)
+
+
+class DatabaseUnavailableError(ServiceUnavailableError):
+    code = "DATABASE_UNAVAILABLE"
+
+    def __init__(
+        self, safe_message: str = "Metadata persistence is temporarily unavailable."
+    ) -> None:
+        super().__init__(safe_message)
+
+
+class ConfigurationConnectivityError(ValidationError):
+    code = "CONFIGURATION_CONNECTIVITY_FAILED"
+
+
+class LLMConnectivityError(ConfigurationConnectivityError):
+    code = "LLM_CONNECTIVITY_FAILED"
+
+
+class EmbeddingConnectivityError(ConfigurationConnectivityError):
+    code = "EMBEDDING_CONNECTIVITY_FAILED"
+
+
+class ReindexRequiredError(DomainError):
+    category = ErrorCategory.INCOMPATIBLE_INDEX
+    code = "REINDEX_REQUIRED"
+
+
+class ConfigurationActivationError(DomainError):
+    code = "CONFIGURATION_ACTIVATION_FAILED"
+
 
 class DocumentInProcessingError(DomainError):
     category = ErrorCategory.DOCUMENT_IN_PROCESSING
     code = "DOCUMENT_IN_PROCESSING"
+
+
+class DocumentNotDeletableError(DomainError):
+    category = ErrorCategory.DOCUMENT_NOT_DELETABLE
+    code = "DOCUMENT_NOT_DELETABLE"
+
+
+class CleanupFailedError(DomainError):
+    category = ErrorCategory.DOCUMENT_CLEANUP_FAILED
+    code = "DOCUMENT_CLEANUP_FAILED"
+
+
+class SessionNotFoundError(DomainError):
+    code = "SESSION_NOT_FOUND"
+
+    def __init__(self) -> None:
+        super().__init__("The chat session was not found or has expired. Start a new session.")

@@ -29,3 +29,4 @@ class IngestionJobModel(Base):
     chunks_indexed: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     worker_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
     embedding_config_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
+    chunking_config_snapshot: Mapped[str | None] = mapped_column(String(1000), nullable=True)

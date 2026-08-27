@@ -47,6 +47,7 @@ class ChatMessage:
     content: str
     turn_order: int
     created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
+    answer_id: UUID | None = None
 
     def __post_init__(self) -> None:
         if not self.content.strip():

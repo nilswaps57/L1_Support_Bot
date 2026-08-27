@@ -1,0 +1,82 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: var(--space-5);
+  background: rgb(23 33 43 / 42%);
+}
+
+.dialog {
+  width: min(100%, 32rem);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-dialog);
+}
+
+.dialog h2 {
+  margin-bottom: var(--space-3);
+  overflow-wrap: anywhere;
+}
+
+.description {
+  margin-bottom: var(--space-4);
+  color: var(--color-ink-muted);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.cancel,
+.confirm {
+  min-width: 5.5rem;
+  padding: var(--space-2) var(--space-4);
+  font-weight: 650;
+}
+
+.cancel {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.confirm {
+  border-color: var(--color-danger);
+  background: var(--color-danger);
+  color: var(--color-accent-contrast);
+}
+
+.confirm:hover:not(:disabled) {
+  background: #862d2d;
+}
+
+@media (max-width: 639px) {
+  .backdrop {
+    align-items: end;
+    padding: 0;
+  }
+
+  .dialog {
+    width: 100%;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+  }
+
+  .actions {
+    justify-content: stretch;
+  }
+
+  .cancel,
+  .confirm {
+    flex: 1;
+  }
+}

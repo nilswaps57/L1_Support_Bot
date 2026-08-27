@@ -1,1 +1,1 @@
-"""Minimal Phase 5 chat-session creation boundary."""
+"""Session lifecycle and conversational context use cases."""

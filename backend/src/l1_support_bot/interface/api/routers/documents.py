@@ -5,6 +5,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, File, Form, HTTPException, Query, Request, UploadFile, status
 
+from l1_support_bot.application.ingestion.delete_document import DeleteDocument
 from l1_support_bot.application.ingestion.get_document import GetDocument
 from l1_support_bot.application.ingestion.get_documents import GetDocuments
 from l1_support_bot.application.ingestion.upload_document import UploadDocument, UploadRequest
@@ -13,7 +14,8 @@ from l1_support_bot.domain.models.document import SourceType
 from l1_support_bot.domain.models.ingestion import IngestionStatus
 from l1_support_bot.domain.ports.file_storage import FileStoragePort
 from l1_support_bot.domain.ports.repositories import DocumentRepository, IngestionJobRepository
-from l1_support_bot.interface.dependencies import get_dependencies
+from l1_support_bot.interface.dependencies import ensure_persistence_available, get_dependencies
+from l1_support_bot.interface.dto.document_lifecycle import DocumentLifecycleResponse
 from l1_support_bot.interface.dto.documents import (
     DocumentDetailResponse,
     DocumentListItem,
@@ -48,6 +50,7 @@ async def upload_document(
     source_type: Annotated[str, Form(...)],
     name: Annotated[str | None, Form()] = None,
 ) -> UploadAcceptedResponse:
+    await ensure_persistence_available(request)
     document_repository, ingestion_job_repository, file_storage = _ports(request)
     try:
         parsed_source_type = SourceType(source_type)
@@ -113,3 +116,25 @@ async def get_document(request: Request, document_id: UUID) -> DocumentDetailRes
     if result is None:
         raise HTTPException(status_code=404, detail="Document not found")
     return DocumentDetailResponse.from_values(result.document, result.latest_job)
+
+
+@router.delete(
+    "/{document_id}",
+    response_model=DocumentLifecycleResponse,
+    status_code=status.HTTP_202_ACCEPTED,
+)
+async def delete_document(
+    request: Request, document_id: UUID
+) -> DocumentLifecycleResponse:
+    await ensure_persistence_available(request)
+    dependencies = get_dependencies(request)
+    if dependencies.document_repository is None or dependencies.cleanup_document is None:
+        raise ServiceUnavailableError("Document management is temporarily unavailable.")
+    try:
+        document = await DeleteDocument(
+            documents=dependencies.document_repository,
+            cleanup=dependencies.cleanup_document,
+        ).execute(document_id)
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail="Document not found") from exc
+    return DocumentLifecycleResponse(document_id=document.id, status=document.status.value)

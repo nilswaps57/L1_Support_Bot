@@ -7,13 +7,9 @@ from typing import Any
 
 import httpx
 
-from l1_support_bot.domain.errors import DomainError, ErrorCategory
+from l1_support_bot.application.shared.retry_policy import RetryPolicy, run_with_retry
+from l1_support_bot.domain.errors import EmbeddingUnavailableError, RetryExhaustedError
 from l1_support_bot.domain.models.configuration import EmbeddingConfig
-
-
-class EmbeddingUnavailableError(DomainError):
-    category = ErrorCategory.UNAVAILABLE_SERVICE
-    code = "EMBEDDING_UNAVAILABLE"
 
 
 class HttpEmbeddingAdapter:
@@ -28,10 +24,17 @@ class HttpEmbeddingAdapter:
             return ()
         client = self.client or httpx.AsyncClient(timeout=config.timeout_seconds)
         try:
-            response = await client.post(
-                self._endpoint(config),
-                headers=self._headers(),
-                json={"model": config.model, "input": list(texts)},
+            async def request_once() -> httpx.Response:
+                return await client.post(
+                    self._endpoint(config),
+                    headers=self._headers(),
+                    json={"model": config.model, "input": list(texts)},
+                )
+
+            response = await run_with_retry(
+                request_once,
+                policy=RetryPolicy(max_attempts=3),
+                idempotent=True,
             )
             response.raise_for_status()
             vectors = self._vectors(response.json())
@@ -41,6 +44,8 @@ class HttpEmbeddingAdapter:
             return vectors
         except EmbeddingUnavailableError:
             raise
+        except RetryExhaustedError as exc:
+            raise EmbeddingUnavailableError() from exc
         except (httpx.HTTPError, ValueError, KeyError, TypeError) as exc:
             raise EmbeddingUnavailableError(
                 "Embedding service is temporarily unavailable."

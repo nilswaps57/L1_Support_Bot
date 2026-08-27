@@ -40,6 +40,7 @@ class KnowledgeChunk:
     text: str
     metadata: ChunkMetadata
     embedding_model_id: str | None = None
+    index_generation_id: str | None = None
 
     def __post_init__(self) -> None:
         if self.sequence < 0:

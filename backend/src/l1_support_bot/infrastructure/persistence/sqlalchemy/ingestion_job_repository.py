@@ -31,6 +31,7 @@ def _to_domain(model: IngestionJobModel) -> IngestionJob:
         chunks_indexed=model.chunks_indexed,
         worker_id=model.worker_id,
         embedding_config_id=model.embedding_config_id,
+        chunking_config_snapshot=model.chunking_config_snapshot,
     )
 
 
@@ -71,6 +72,17 @@ class SqlAlchemyIngestionJobRepository:
             model = await session.scalar(statement)
             return _to_domain(model) if model else None
 
+    async def delete_by_document(self, document_id: UUID) -> None:
+        from sqlalchemy import delete
+
+        async with self.session_factory() as session:
+            await session.execute(
+                delete(IngestionJobModel).where(
+                    IngestionJobModel.document_id == str(document_id)
+                )
+            )
+            await session.commit()
+
     async def _save(self, job: IngestionJob, *, create_only: bool) -> IngestionJob:
         model = IngestionJobModel(
             id=str(job.id),
@@ -98,6 +110,7 @@ class SqlAlchemyIngestionJobRepository:
             chunks_indexed=job.chunks_indexed,
             worker_id=job.worker_id,
             embedding_config_id=job.embedding_config_id,
+            chunking_config_snapshot=job.chunking_config_snapshot,
         )
         async with self.session_factory() as session:
             if create_only:

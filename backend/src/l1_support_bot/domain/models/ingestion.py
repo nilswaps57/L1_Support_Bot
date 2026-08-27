@@ -97,11 +97,30 @@ _ALLOWED_TRANSITIONS: Final[dict[IngestionStatus, frozenset[IngestionStatus]]] =
             IngestionStatus.FAILED,
         }
     ),
-    IngestionStatus.COMPLETED: frozenset({IngestionStatus.DELETING, IngestionStatus.QUEUED}),
-    IngestionStatus.COMPLETED_WITH_WARNING: frozenset(
-        {IngestionStatus.DELETING, IngestionStatus.QUEUED}
+    IngestionStatus.COMPLETED: frozenset(
+        {
+            IngestionStatus.DELETING,
+            IngestionStatus.QUEUED,
+            IngestionStatus.COMPLETED,
+            IngestionStatus.COMPLETED_WITH_WARNING,
+        }
     ),
-    IngestionStatus.FAILED: frozenset({IngestionStatus.DELETING, IngestionStatus.QUEUED}),
+    IngestionStatus.COMPLETED_WITH_WARNING: frozenset(
+        {
+            IngestionStatus.DELETING,
+            IngestionStatus.QUEUED,
+            IngestionStatus.COMPLETED,
+            IngestionStatus.COMPLETED_WITH_WARNING,
+        }
+    ),
+    IngestionStatus.FAILED: frozenset(
+        {
+            IngestionStatus.DELETING,
+            IngestionStatus.QUEUED,
+            IngestionStatus.COMPLETED,
+            IngestionStatus.COMPLETED_WITH_WARNING,
+        }
+    ),
     IngestionStatus.DELETING: frozenset({IngestionStatus.DELETED}),
     IngestionStatus.DELETED: frozenset(),
 }
@@ -124,6 +143,7 @@ class IngestionJob:
     chunks_indexed: int = 0
     worker_id: str | None = None
     embedding_config_id: str | None = None
+    chunking_config_snapshot: str | None = None
 
     def __post_init__(self) -> None:
         if self.attempt_count < 0 or self.max_attempts < 1:
@@ -167,6 +187,7 @@ class IngestionJob:
         chunks_indexed: int | None = None,
         parse_warnings: tuple[ParseWarning | str, ...] | None = None,
         last_error: str | None = None,
+        chunking_config_snapshot: str | None = None,
     ) -> "IngestionJob":
         if status is not None and status is not self.status:
             self.status.transition_to(status)
@@ -177,4 +198,9 @@ class IngestionJob:
             chunks_indexed=chunks_indexed if chunks_indexed is not None else self.chunks_indexed,
             parse_warnings=parse_warnings if parse_warnings is not None else self.parse_warnings,
             last_error=last_error if last_error is not None else self.last_error,
+            chunking_config_snapshot=(
+                chunking_config_snapshot
+                if chunking_config_snapshot is not None
+                else self.chunking_config_snapshot
+            ),
         )

@@ -7,12 +7,12 @@ from uuid import UUID
 from l1_support_bot.domain.models.chunk import KnowledgeChunk
 from l1_support_bot.domain.models.configuration import (
     ChunkingConfig,
+    ConfigurationSnapshot,
     EmbeddingConfig,
     LLMConfig,
     RetrievalConfig,
 )
 from l1_support_bot.domain.models.document import Document, SourceType
-from l1_support_bot.domain.models.feedback import Feedback
 from l1_support_bot.domain.models.ingestion import IngestionJob, IngestionStatus
 
 
@@ -46,17 +46,23 @@ class IngestionJobRepository(Protocol):
 
     async def latest_for_document(self, document_id: UUID) -> IngestionJob | None: ...
 
+    async def delete_by_document(self, document_id: UUID) -> None: ...
+
 
 class ChunkRepository(Protocol):
     async def save_batch(self, chunks: Sequence[KnowledgeChunk]) -> None: ...
 
     async def delete_by_document(self, document_id: UUID) -> None: ...
 
+    async def replace_for_document(
+        self, document_id: UUID, chunks: Sequence[KnowledgeChunk]
+    ) -> None: ...
 
-class FeedbackRepository(Protocol):
-    async def save(self, feedback: Feedback) -> Feedback: ...
+    async def delete_diagnostics_by_document(self, document_id: UUID) -> None: ...
 
-    async def list_by_session(self, session_id: UUID) -> Sequence[Feedback]: ...
+
+class DiagnosticRepository(Protocol):
+    async def delete_diagnostics_by_document(self, document_id: UUID) -> None: ...
 
 
 class ConfigurationRepository(Protocol):
@@ -75,3 +81,7 @@ class ConfigurationRepository(Protocol):
     async def save_retrieval(self, config: RetrievalConfig) -> RetrievalConfig: ...
 
     async def save_chunking(self, config: ChunkingConfig) -> ChunkingConfig: ...
+
+    async def count_indexed_documents(self) -> int: ...
+
+    async def save_all(self, configuration: ConfigurationSnapshot) -> None: ...

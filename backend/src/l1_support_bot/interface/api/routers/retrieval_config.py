@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from l1_support_bot.domain.errors import ServiceUnavailableError
 from l1_support_bot.domain.models.configuration import RetrievalConfig
-from l1_support_bot.interface.dependencies import get_dependencies
+from l1_support_bot.interface.dependencies import ensure_persistence_available, get_dependencies
 
 router = APIRouter(prefix="/config/retrieval", tags=["configuration"])
 
@@ -53,6 +53,7 @@ async def get_retrieval_config(request: Request) -> RetrievalConfigResponse:
 async def save_retrieval_config(
     request: Request, payload: RetrievalConfigRequest
 ) -> RetrievalConfigResponse:
+    await ensure_persistence_available(request)
     repository = get_dependencies(request).configuration_repository
     if repository is None or not hasattr(repository, "save_retrieval"):
         raise ServiceUnavailableError("Retrieval configuration is temporarily unavailable.")

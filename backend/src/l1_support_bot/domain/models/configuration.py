@@ -3,6 +3,8 @@
 from dataclasses import dataclass
 from urllib.parse import urlparse
 
+CHUNKING_STRATEGIES = frozenset({"SEMANTIC_STRUCTURE", "FIXED_SIZE"})
+
 
 def _validate_endpoint(endpoint: str) -> None:
     parsed = urlparse(endpoint)
@@ -24,6 +26,7 @@ class LLMConfig:
     is_active: bool = True
     label: str | None = None
     api_key_configured: bool = False
+    config_id: str | None = None
 
     def __post_init__(self) -> None:
         if not self.provider.strip() or not self.model.strip():
@@ -31,10 +34,10 @@ class LLMConfig:
         _validate_endpoint(self.endpoint)
         if not 0 <= self.temperature <= 2:
             raise ValueError("LLM temperature must be between zero and two")
-        if self.max_tokens < 1 or self.context_window < 1 or self.timeout_seconds < 1:
+        if self.max_tokens < 1 or self.context_window < 1 or not 1 <= self.timeout_seconds <= 600:
             raise ValueError("LLM token and timeout values must be positive")
-        if self.max_retries < 0:
-            raise ValueError("LLM retries cannot be negative")
+        if not 0 <= self.max_retries <= 5:
+            raise ValueError("LLM retries must be between zero and five")
 
 
 @dataclass(frozen=True, slots=True)
@@ -57,7 +60,7 @@ class EmbeddingConfig:
         if not self.provider.strip() or not self.model.strip() or not self.model_version.strip():
             raise ValueError("Embedding provider, model, and version are required")
         _validate_endpoint(self.endpoint)
-        if self.dimensions < 1 or self.batch_size < 1 or self.timeout_seconds < 1:
+        if self.dimensions < 1 or self.batch_size < 1 or not 1 <= self.timeout_seconds <= 600:
             raise ValueError("Embedding dimensions, batch size, and timeout must be positive")
         if self.distance_method not in {"cosine", "dot_product", "euclidean"}:
             raise ValueError("Unsupported embedding distance method")
@@ -80,6 +83,8 @@ class RetrievalConfig:
     rerank_top_k: int = 20
     exact_id_boost: bool = True
     min_evidence_tokens: int = 100
+    config_id: str | None = None
+    is_active: bool = True
 
     def __post_init__(self) -> None:
         if (
@@ -93,7 +98,7 @@ class RetrievalConfig:
         if (
             self.dense_weight < 0
             or self.sparse_weight < 0
-            or not 0 < self.dense_weight + self.sparse_weight <= 1
+            or abs(self.dense_weight + self.sparse_weight - 1) > 1e-9
         ):
             raise ValueError("Retrieval weights must be non-negative and non-zero")
         if self.rerank_top_k < 1 or self.min_evidence_tokens < 1:
@@ -109,9 +114,57 @@ class ChunkingConfig:
     overlap_tokens: int = 64
     table_as_unit: bool = True
     procedure_grouping: bool = True
+    config_id: str | None = None
+    is_active: bool = True
 
     def __post_init__(self) -> None:
+        if self.strategy not in CHUNKING_STRATEGIES:
+            raise ValueError("Unsupported chunking strategy")
         if not 1 <= self.min_chunk_tokens <= self.target_chunk_tokens <= self.max_chunk_tokens:
             raise ValueError("Chunk size bounds are invalid")
-        if not 0 <= self.overlap_tokens < self.max_chunk_tokens:
+        if not 0 <= self.overlap_tokens < self.target_chunk_tokens:
             raise ValueError("Chunk overlap must be within the maximum chunk size")
+
+
+@dataclass(frozen=True, slots=True)
+class ConfigurationSnapshot:
+    """One immutable set of settings captured at request or job start."""
+
+    llm: LLMConfig
+    embedding: EmbeddingConfig
+    retrieval: RetrievalConfig
+    chunking: ChunkingConfig
+
+
+@dataclass(frozen=True, slots=True)
+class ConfigurationValidation:
+    configuration: ConfigurationSnapshot
+    requires_reindex: bool = False
+    reindex_reasons: tuple[str, ...] = ()
+
+    @property
+    def llm(self) -> LLMConfig:
+        return self.configuration.llm
+
+    @property
+    def embedding(self) -> EmbeddingConfig:
+        return self.configuration.embedding
+
+    @property
+    def retrieval(self) -> RetrievalConfig:
+        return self.configuration.retrieval
+
+    @property
+    def chunking(self) -> ChunkingConfig:
+        return self.configuration.chunking
+
+
+__all__ = [
+    "CHUNKING_STRATEGIES",
+    "ChunkingConfig",
+    "ConfigurationSnapshot",
+    "ConfigurationValidation",
+    "EmbeddingConfig",
+    "LLMConfig",
+    "RetrievalConfig",
+]

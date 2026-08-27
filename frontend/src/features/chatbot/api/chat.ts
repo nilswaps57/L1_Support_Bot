@@ -7,9 +7,21 @@ export type ChatCitation = {
   page_number: number | null;
   section: string | null;
   task_code: string | null;
+  screen_name: string | null;
+  menu_path: string | null;
+  prerequisites: string[];
+  modes: string[];
+  field_names: string[];
+  procedure_steps: string[];
+  error_code: string | null;
+  jira_id: string | null;
+  rca_reference: string | null;
+  source_type: string | null;
+  relevance_score: number | null;
 };
 
 export type ChatResponse = {
+    answer_id: string;
   session_id: string;
   question: string;
   answer_text: string;

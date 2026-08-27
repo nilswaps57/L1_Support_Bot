@@ -1,39 +1,40 @@
-import { useState } from "react";
-
-import { askChat } from "../api/chat";
 import { ChatInput } from "../components/ChatInput";
-import { MessageList, type ChatMessage } from "../components/MessageList";
-
-const sessionId = globalThis.crypto?.randomUUID?.() ?? "00000000-0000-0000-0000-000000000001";
+import { ChatSessionControls } from "../components/ChatSessionControls";
+import { MessageList } from "../components/MessageList";
+import { useChatSession } from "../hooks/useChatSession";
+import { Alert } from "../../../shared/components/Alert";
+import { LoadingSkeleton } from "../../../shared/components/LoadingSkeleton";
+import { PageHeader } from "../../../shared/components/PageHeader";
+import styles from "./ChatPage.module.css";
 
 export function ChatPage() {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [isSending, setIsSending] = useState(false);
-
-  async function submit(question: string) {
-    setIsSending(true);
-    try {
-      const response = await askChat(sessionId, question);
-      setMessages((current) => [
-        ...current,
-        { question, answer: response.answer_text, answerType: response.answer_type },
-      ]);
-    } catch {
-      setMessages((current) => [
-        ...current,
-        { question, error: "Answer generation is temporarily unavailable." },
-      ]);
-    } finally {
-      setIsSending(false);
-    }
-  }
+  const { session, messages, sessionError, isLoading, isSending, send, clear, startNewSession, submitFeedback } = useChatSession();
 
   return (
-    <main>
-      <h1>Chat</h1>
-      <p>FLEXCUBE Support</p>
-      <MessageList messages={messages} />
-      <ChatInput onSubmit={submit} disabled={isSending} />
+    <main className={`appContainer ${styles.page}`}>
+      <PageHeader title="Chat" description="FLEXCUBE support for branch users." />
+      <ChatSessionControls expiresAt={session?.expires_at} onClear={() => void clear()} disabled={isLoading || isSending} />
+      {sessionError ? (
+        <div className={styles.sessionError}>
+          <Alert tone="error">{sessionError}</Alert>
+          <div>
+            <button type="button" onClick={() => void startNewSession()}>Start new session</button>
+          </div>
+        </div>
+      ) : null}
+      <section className={styles.conversationFrame} aria-label="Conversation workspace">
+        {isLoading && !session ? <LoadingSkeleton variant="conversation" label="Preparing chat session" /> : null}
+        {!isLoading ? (
+          <MessageList
+            messages={messages}
+            pending={isSending}
+            onFeedback={(answerId, rating, comment) => submitFeedback(answerId, rating, comment)}
+          />
+        ) : null}
+      </section>
+      <section className={styles.composerFrame} aria-label="Question composer">
+        <ChatInput onSubmit={(question) => void send(question)} disabled={isLoading || isSending || !session} />
+      </section>
     </main>
   );
 }

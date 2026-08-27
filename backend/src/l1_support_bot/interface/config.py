@@ -35,6 +35,8 @@ class Settings(BaseSettings):
     max_request_body_bytes: int = 10 * 1024 * 1024
     max_document_size_bytes: int = 10 * 1024 * 1024
     session_ttl_minutes: int = 30
+    session_history_window_turns: int = 10
+    session_history_token_budget: int = 2_000
 
     @field_validator("cors_allowed_origins", mode="before")
     @classmethod
@@ -54,6 +56,8 @@ class Settings(BaseSettings):
             raise ValueError("Maximum document size must be positive")
         if self.session_ttl_minutes < 1:
             raise ValueError("Session TTL must be positive")
+        if self.session_history_window_turns < 1 or self.session_history_token_budget < 1:
+            raise ValueError("Session history limits must be positive")
         if self.embedding_dimensions < 1 or self.embedding_batch_size < 1:
             raise ValueError("Embedding dimensions and batch size must be positive")
         if self.embedding_timeout_seconds < 1:

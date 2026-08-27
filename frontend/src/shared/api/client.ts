@@ -1,3 +1,5 @@
+import { safeApiError } from "./error-handler";
+
 export type ApiError = {
   error_code: string;
   message: string;
@@ -31,7 +33,13 @@ export class ApiClient {
     });
 
     if (!response.ok) {
-      const payload = (await response.json()) as ApiError;
+      let responseBody: unknown;
+      try {
+        responseBody = await response.json();
+      } catch {
+        responseBody = undefined;
+      }
+      const payload = safeApiError(response.status, responseBody);
       throw new ApiClientError(response.status, payload);
     }
 

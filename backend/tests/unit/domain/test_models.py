@@ -135,6 +135,7 @@ def test_session_expiry_and_message_order() -> None:
 
 def test_feedback_validates_rating_and_comment_length() -> None:
     feedback = Feedback.new(
+        answer_id=uuid4(),
         session_id=uuid4(),
         question="Question",
         answer_text="Answer",
@@ -145,6 +146,7 @@ def test_feedback_validates_rating_and_comment_length() -> None:
     assert feedback.rating is FeedbackRating.HELPFUL
     with pytest.raises(ValueError):
         Feedback.new(
+            answer_id=uuid4(),
             session_id=uuid4(),
             question="Question",
             answer_text="Answer",

@@ -39,6 +39,25 @@ def get_logger(name: str = "l1_support_bot") -> structlog.stdlib.BoundLogger:
     return cast(structlog.stdlib.BoundLogger, structlog.get_logger(name))
 
 
+def log_failure(*, category: str, duration_ms: int | None = None) -> None:
+    """Log failure metadata only; never log exception text, prompts, or payloads."""
+
+    fields: dict[str, object] = {"error_category": category}
+    if duration_ms is not None:
+        fields["duration_ms"] = duration_ms
+    get_logger().warning("request_failed", **fields)
+
+
+def log_security_event(*, category: str, outcome: str) -> None:
+    """Log only aggregate security metadata; prompt and document content stay out of logs."""
+
+    get_logger().warning(
+        "security_event",
+        security_category=category,
+        outcome=outcome,
+    )
+
+
 def bind_request_context(*, request_id: str, correlation_id: str) -> RequestContext:
     context = RequestContext(UUID(request_id), UUID(correlation_id))
     _request_context.set(context)

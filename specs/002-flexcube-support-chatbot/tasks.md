@@ -199,7 +199,7 @@ and verify the answer is generated only from retrieved knowledge.
 - [X] T126 [P] [US3] Implement lexical retrieval and sparse candidate generation in `backend/src/l1_support_bot/infrastructure/retrieval/lexical_retriever.py`.
 - [X] T127 [US3] Implement dense-plus-lexical-plus-exact hybrid fusion, deduplication, metadata filtering, and configurable weighting in `backend/src/l1_support_bot/infrastructure/retrieval/hybrid_retriever.py`.
 - [X] T130 [US3] Add retrieval configuration model, repository, migration, DTOs, and routes in `backend/src/l1_support_bot/domain/models/retrieval_config.py`, `backend/src/l1_support_bot/infrastructure/persistence/sqlalchemy/retrieval_config_repository.py`, `backend/alembic/versions/004_retrieval_configuration.py`, and `backend/src/l1_support_bot/interface/api/routers/retrieval_config.py`.
-- [ ] T132 [US3] Run the 50-question dense-only versus hybrid retrieval evaluation and record Recall@5, Recall@10, MRR, exact-identifier hit rate, and latency in `docs/evaluation/phase4-retrieval-baseline.md`.
+- [X] T132 [US3] Run the 50-question dense-only versus hybrid retrieval evaluation and record Recall@5, Recall@10, MRR, exact-identifier hit rate, and latency in `docs/evaluation/phase4-retrieval-baseline.md`.
 - [X] T079 [US3] Implement the LLM port and Ollama HTTP adapter in `backend/src/l1_support_bot/domain/ports/llm.py` and `backend/src/l1_support_bot/infrastructure/llm/ollama_client.py` with timeout, retry, health-check, and controlled failure mapping.
 - [X] T080 [US3] Implement context assembly and grounded prompt construction in `backend/src/l1_support_bot/application/retrieval/context_assembler.py`, `backend/src/l1_support_bot/application/retrieval/prompt_builder.py`, and `backend/src/l1_support_bot/infrastructure/prompts/system_prompt_v1.txt`.
 - [X] T081 [US3] Implement the `AskQuestion` use case in `backend/src/l1_support_bot/application/retrieval/ask_question.py`, ensuring the LLM never directly queries the vector store and receives only framed retrieved context.
@@ -223,17 +223,17 @@ its claims, with document and available source-location metadata.
 **Independent test**: Ask a supported question and verify a source citation; ask an unsupported
 question and verify no citation; inspect the cited chunk ID against retrieved results.
 
-- [ ] T086 [P] [US4] Add citation construction and validation unit tests for document name, page, section, task code, screen name, chunk identity, deleted documents, and incomplete metadata in `backend/tests/unit/application/retrieval/test_citation_validation.py`.
-- [ ] T087 [P] [US4] Add response-schema tests for grounded answers, citation absence on insufficient responses, and rejection of fabricated citation IDs in `backend/tests/unit/application/retrieval/test_response_validator.py`.
-- [ ] T088 [P] [US4] Add API contract tests for citation fields and source-location omission behavior in `backend/tests/api/test_citation_contract.py`.
-- [ ] T089 [P] [US4] Add frontend citation rendering tests for document name, page, section, task code, missing page, and multiple citations in `frontend/tests/components/chatbot/citation-list.test.tsx`.
-- [ ] T090 [P] [US4] Define the citation domain model and citation response DTO in `backend/src/l1_support_bot/domain/models/citation.py` and `backend/src/l1_support_bot/interface/dto/citations.py`.
-- [ ] T091 [US4] Implement citation construction from retrieved chunks and answer references in `backend/src/l1_support_bot/application/retrieval/citation_builder.py`.
-- [ ] T092 [US4] Implement response validation for citation presence, citation-to-retrieval membership, source existence, and citation coverage in `backend/src/l1_support_bot/application/retrieval/response_validator.py`.
-- [ ] T093 [US4] Extend the answer DTO and chat route in `backend/src/l1_support_bot/interface/dto/chat.py` and `backend/src/l1_support_bot/interface/api/routers/chat.py` to return validated citations only.
-- [ ] T094 [US4] Implement citation rendering and accessible source labels in `frontend/src/features/chatbot/components/CitationList.tsx` and `frontend/src/features/chatbot/components/CitationItem.tsx`.
-- [ ] T095 [US4] Document citation traceability from source document to parsed element, chunk, retrieval result, context, answer, and UI in `docs/architecture/citations.md`.
-- [ ] T096 [US4] Run the independent US4 validation with citation fixtures in `backend/tests/unit/application/retrieval/test_citation_validation.py`, `backend/tests/unit/application/retrieval/test_response_validator.py`, and `frontend/tests/components/chatbot/citation-list.test.tsx`, verifying SC-001, SC-006, and SC-007 behavior.
+- [X] T086 [P] [US4] Add citation construction and validation unit tests for document name, page, section, task code, screen name, chunk identity, deleted documents, and incomplete metadata in `backend/tests/unit/application/retrieval/test_citation_validation.py`.
+- [X] T087 [P] [US4] Add response-schema tests for grounded answers, citation absence on insufficient responses, and rejection of fabricated citation IDs in `backend/tests/unit/application/retrieval/test_response_validator.py`.
+- [X] T088 [P] [US4] Add API contract tests for citation fields and source-location omission behavior in `backend/tests/api/test_citation_contract.py`.
+- [X] T089 [P] [US4] Add frontend citation rendering tests for document name, page, section, task code, missing page, and multiple citations in `frontend/tests/components/chatbot/citation-list.test.tsx`.
+- [X] T090 [P] [US4] Define the citation domain model and citation response DTO in `backend/src/l1_support_bot/domain/models/citation.py` and `backend/src/l1_support_bot/interface/dto/citations.py`.
+- [X] T091 [US4] Implement citation construction from retrieved chunks and answer references in `backend/src/l1_support_bot/application/retrieval/citation_builder.py`.
+- [X] T092 [US4] Implement response validation for citation presence, citation-to-retrieval membership, source existence, and citation coverage in `backend/src/l1_support_bot/application/retrieval/response_validator.py`.
+- [X] T093 [US4] Extend the answer DTO and chat route in `backend/src/l1_support_bot/interface/dto/chat.py` and `backend/src/l1_support_bot/interface/api/routers/chat.py` to return validated citations only.
+- [X] T094 [US4] Implement citation rendering and accessible source labels in `frontend/src/features/chatbot/components/CitationList.tsx` and `frontend/src/features/chatbot/components/CitationItem.tsx`.
+- [X] T095 [US4] Document citation traceability from source document to parsed element, chunk, retrieval result, context, answer, and UI in `docs/architecture/citations.md`.
+- [X] T096 [US4] Run the independent US4 validation with citation fixtures in `backend/tests/unit/application/retrieval/test_citation_validation.py`, `backend/tests/unit/application/retrieval/test_response_validator.py`, and `frontend/tests/components/chatbot/citation-list.test.tsx`, verifying SC-001, SC-006, and SC-007 behavior.
 
 **Checkpoint**: Supported answers contain validated citations; unsupported responses do not
 invent or attach citations; absent page numbers are omitted rather than fabricated.
@@ -250,17 +250,17 @@ or below configured confidence and clearly distinguishes insufficient evidence f
 **Independent test**: Ask an out-of-knowledge-base question with an available LLM and verify an
 explicit insufficient-information response with no domain claims or citations.
 
-- [ ] T097 [P] [US5] Add evidence-sufficiency tests for no results, low score, low token evidence, exact-identifier exceptions, and partially available evidence in `backend/tests/unit/application/retrieval/test_evidence_sufficiency.py`.
-- [ ] T098 [P] [US5] Add unsupported and incorrect-premise chat tests in `backend/tests/unit/application/retrieval/test_insufficient_information.py`.
-- [ ] T099 [P] [US5] Add API tests distinguishing `INSUFFICIENT` from `LLM_UNAVAILABLE` and `VECTOR_STORE_UNAVAILABLE` in `backend/tests/api/test_chat_failure_and_insufficient.py`.
-- [ ] T100 [P] [US5] Add frontend tests for insufficient, partial, and service-failure response states in `frontend/tests/components/chatbot/response-states.test.tsx`.
-- [ ] T101 [P] [US5] Implement evidence-sufficiency policy and threshold validation in `backend/src/l1_support_bot/application/retrieval/evidence_sufficiency.py`.
-- [ ] T102 [US5] Implement the `InsufficientInfoResponse`, partial-answer, ambiguous-answer, and incorrect-premise result paths in `backend/src/l1_support_bot/application/retrieval/answer_outcomes.py`.
-- [ ] T103 [US5] Update `AskQuestion` in `backend/src/l1_support_bot/application/retrieval/ask_question.py` to return insufficient information before LLM generation when evidence is inadequate.
-- [ ] T104 [US5] Add user-safe response-state DTOs and error mapping in `backend/src/l1_support_bot/interface/dto/chat.py` and `backend/src/l1_support_bot/interface/api/middleware/errors.py`.
-- [ ] T105 [US5] Implement explicit insufficient-information and partial-answer UI states in `frontend/src/features/chatbot/components/ResponseState.tsx` and `frontend/src/features/chatbot/components/MessageBubble.tsx`.
-- [ ] T106 [US5] Add an evaluation fixture for known-answer and unanswerable FLEXCUBE questions in `backend/tests/eval/insufficient_information_cases.json`.
-- [ ] T107 [US5] Run the independent US5 validation with `backend/tests/unit/application/retrieval/test_insufficient_information.py`, `backend/tests/unit/application/retrieval/test_evidence_sufficiency.py`, and `backend/tests/api/test_chat_failure_and_insufficient.py`, verifying no unsupported domain claim is produced.
+- [X] T097 [P] [US5] Add evidence-sufficiency tests for no results, low score, low token evidence, exact-identifier exceptions, and partially available evidence in `backend/tests/unit/application/retrieval/test_evidence_sufficiency.py`.
+- [X] T098 [P] [US5] Add unsupported and incorrect-premise chat tests in `backend/tests/unit/application/retrieval/test_insufficient_information.py`.
+- [X] T099 [P] [US5] Add API tests distinguishing `INSUFFICIENT` from `LLM_UNAVAILABLE` and `VECTOR_STORE_UNAVAILABLE` in `backend/tests/api/test_chat_failure_and_insufficient.py`.
+- [X] T100 [P] [US5] Add frontend tests for insufficient, partial, and service-failure response states in `frontend/tests/components/chatbot/response-states.test.tsx`.
+- [X] T101 [P] [US5] Implement evidence-sufficiency policy and threshold validation in `backend/src/l1_support_bot/application/retrieval/evidence_sufficiency.py`.
+- [X] T102 [US5] Implement the `InsufficientInfoResponse`, partial-answer, ambiguous-answer, and incorrect-premise result paths in `backend/src/l1_support_bot/application/retrieval/answer_outcomes.py`.
+- [X] T103 [US5] Update `AskQuestion` in `backend/src/l1_support_bot/application/retrieval/ask_question.py` to return insufficient information before LLM generation when evidence is inadequate.
+- [X] T104 [US5] Add user-safe response-state DTOs and error mapping in `backend/src/l1_support_bot/interface/dto/chat.py` and `backend/src/l1_support_bot/interface/api/middleware/errors.py`.
+- [X] T105 [US5] Implement explicit insufficient-information and partial-answer UI states in `frontend/src/features/chatbot/components/ResponseState.tsx` and `frontend/src/features/chatbot/components/MessageBubble.tsx`.
+- [X] T106 [US5] Add an evaluation fixture for known-answer and unanswerable FLEXCUBE questions in `backend/tests/eval/insufficient_information_cases.json`.
+- [X] T107 [US5] Run the independent US5 validation with `backend/tests/unit/application/retrieval/test_insufficient_information.py`, `backend/tests/unit/application/retrieval/test_evidence_sufficiency.py`, and `backend/tests/api/test_chat_failure_and_insufficient.py`, verifying no unsupported domain claim is produced.
 
 **Checkpoint**: Evidence gaps yield an honest response; an unavailable dependency yields a
 service error; neither path falls back to ungrounded generation.
@@ -277,18 +277,18 @@ conversation history remains context only, never factual evidence.
 **Independent test**: Ask about BA435, ask "What are its prerequisites?", then clear the session
 and verify the same pronoun-dependent question is treated as a fresh query.
 
-- [ ] T108 [P] [US6] Add session lifecycle, expiry, clear, history-window, and token-budget tests in `backend/tests/unit/application/session/test_session_manager.py`.
-- [ ] T109 [P] [US6] Add follow-up query-resolution tests for pronouns, topic references, ambiguous history, cleared history, and expired sessions in `backend/tests/unit/application/session/test_query_resolution.py`.
-- [ ] T110 [P] [US6] Add session API tests for create, clear, expired session, and bounded history behavior in `backend/tests/api/test_sessions.py`.
-- [ ] T111 [P] [US6] Add frontend tests for chat history, clear-session, expired-session, and follow-up state in `frontend/tests/components/chatbot/session.test.tsx`.
-- [ ] T112 [P] [US6] Implement the session-store port and bounded in-memory session manager in `backend/src/l1_support_bot/domain/ports/session_store.py` and `backend/src/l1_support_bot/infrastructure/session/in_memory_session_store.py`.
-- [ ] T113 [US6] Implement session lifecycle use cases and expiry enforcement in `backend/src/l1_support_bot/application/session/session_manager.py`.
-- [ ] T114 [US6] Implement bounded history selection, token-budget accounting, and follow-up query resolution in `backend/src/l1_support_bot/application/session/query_resolution.py`.
-- [ ] T115 [US6] Update `AskQuestion` in `backend/src/l1_support_bot/application/retrieval/ask_question.py` to separate conversational context from retrieved evidence and to retrieve fresh evidence for every domain answer.
-- [ ] T116 [US6] Add clear-session route and session-expiry error contract in `backend/src/l1_support_bot/interface/api/routers/sessions.py` and `backend/src/l1_support_bot/interface/dto/sessions.py`.
-- [ ] T117 [US6] Add session context provider, clear action, expiry recovery, and bounded message history to `frontend/src/features/chatbot/hooks/useChatSession.ts`, `frontend/src/features/chatbot/components/ChatSessionControls.tsx`, and `frontend/src/features/chatbot/pages/ChatPage.tsx`.
-- [ ] T118 [US6] Document session privacy, retention, expiry, and evidence separation in `docs/architecture/sessions.md`.
-- [ ] T119 [US6] Run the independent US6 validation with `backend/tests/unit/application/session/test_query_resolution.py`, `backend/tests/unit/application/session/test_session_manager.py`, `backend/tests/api/test_sessions.py`, and `frontend/tests/components/chatbot/session.test.tsx` for follow-up, clear, expiry, and evidence-grounding scenarios.
+- [X] T108 [P] [US6] Add session lifecycle, expiry, clear, history-window, and token-budget tests in `backend/tests/unit/application/session/test_session_manager.py`.
+- [X] T109 [P] [US6] Add follow-up query-resolution tests for pronouns, topic references, ambiguous history, cleared history, and expired sessions in `backend/tests/unit/application/session/test_query_resolution.py`.
+- [X] T110 [P] [US6] Add session API tests for create, clear, expired session, and bounded history behavior in `backend/tests/api/test_sessions.py`.
+- [X] T111 [P] [US6] Add frontend tests for chat history, clear-session, expired-session, and follow-up state in `frontend/tests/components/chatbot/session.test.tsx`.
+- [X] T112 [P] [US6] Implement the session-store port and bounded in-memory session manager in `backend/src/l1_support_bot/domain/ports/session_store.py` and `backend/src/l1_support_bot/infrastructure/session/in_memory_session_store.py`.
+- [X] T113 [US6] Implement session lifecycle use cases and expiry enforcement in `backend/src/l1_support_bot/application/session/session_manager.py`.
+- [X] T114 [US6] Implement bounded history selection, token-budget accounting, and follow-up query resolution in `backend/src/l1_support_bot/application/session/query_resolution.py`.
+- [X] T115 [US6] Update `AskQuestion` in `backend/src/l1_support_bot/application/retrieval/ask_question.py` to separate conversational context from retrieved evidence and to retrieve fresh evidence for every domain answer.
+- [X] T116 [US6] Add clear-session route and session-expiry error contract in `backend/src/l1_support_bot/interface/api/routers/sessions.py` and `backend/src/l1_support_bot/interface/dto/sessions.py`.
+- [X] T117 [US6] Add session context provider, clear action, expiry recovery, and bounded message history to `frontend/src/features/chatbot/hooks/useChatSession.ts`, `frontend/src/features/chatbot/components/ChatSessionControls.tsx`, and `frontend/src/features/chatbot/pages/ChatPage.tsx`.
+- [X] T118 [US6] Document session privacy, retention, expiry, and evidence separation in `docs/architecture/sessions.md`.
+- [X] T119 [US6] Run the independent US6 validation with `backend/tests/unit/application/session/test_query_resolution.py`, `backend/tests/unit/application/session/test_session_manager.py`, `backend/tests/api/test_sessions.py`, and `frontend/tests/components/chatbot/session.test.tsx` for follow-up, clear, expiry, and evidence-grounding scenarios.
 
 **Checkpoint**: Follow-ups are convenient but bounded; clearing or expiry removes context;
 history never substitutes for knowledge-base retrieval.
@@ -306,17 +306,17 @@ surfaces ambiguity without silently choosing unsupported interpretations.
 **Independent test**: Index two related documents, ask a cross-source question, and verify
 both supporting citations; ask an ambiguous question and verify ambiguity is communicated.
 
-- [ ] T120 [P] [US7] Add multi-source retrieval and candidate-deduplication tests in `backend/tests/unit/application/retrieval/test_multi_source_context.py`.
-- [ ] T121 [P] [US7] Add partial-coverage and ambiguous-question outcome tests in `backend/tests/unit/application/retrieval/test_partial_and_ambiguous_answers.py`.
-- [ ] T123 [P] [US7] Add multi-document chat API contract tests in `backend/tests/api/test_multi_source_chat.py`.
-- [ ] T124 [P] [US7] Add frontend tests for multiple citations, partial-answer labels, ambiguity prompts, and unsupported premise messaging in `frontend/tests/components/chatbot/multi-source-and-ambiguity.test.tsx`.
-- [ ] T128 [US7] Update `ContextAssembler` in `backend/src/l1_support_bot/application/retrieval/context_assembler.py` to retain multiple document sources while respecting evidence and context-size limits.
-- [ ] T129 [US7] Implement partial-answer and ambiguity classification in `backend/src/l1_support_bot/application/retrieval/answer_outcomes.py` without adding undocumented FLEXCUBE claims.
-- [ ] T131 [US7] Implement the replaceable reranker port and provisional FlashRank adapter in `backend/src/l1_support_bot/domain/ports/reranker.py` and `backend/src/l1_support_bot/infrastructure/reranking/flashrank_reranker.py`.
+- [X] T120 [P] [US7] Add multi-source retrieval and candidate-deduplication tests in `backend/tests/unit/application/retrieval/test_multi_source_context.py`.
+- [X] T121 [P] [US7] Add partial-coverage and ambiguous-question outcome tests in `backend/tests/unit/application/retrieval/test_partial_and_ambiguous_answers.py`.
+- [X] T123 [P] [US7] Add multi-document chat API contract tests in `backend/tests/api/test_multi_source_chat.py`.
+- [X] T124 [P] [US7] Add frontend tests for multiple citations, partial-answer labels, ambiguity prompts, and unsupported premise messaging in `frontend/tests/components/chatbot/multi-source-and-ambiguity.test.tsx`.
+- [X] T128 [US7] Update `ContextAssembler` in `backend/src/l1_support_bot/application/retrieval/context_assembler.py` to retain multiple document sources while respecting evidence and context-size limits.
+- [X] T129 [US7] Implement partial-answer and ambiguity classification in `backend/src/l1_support_bot/application/retrieval/answer_outcomes.py` without adding undocumented FLEXCUBE claims.
+- [X] T131 [US7] Implement the replaceable reranker port and provisional FlashRank adapter in `backend/src/l1_support_bot/domain/ports/reranker.py` and `backend/src/l1_support_bot/infrastructure/reranking/flashrank_reranker.py`.
 - [ ] T133 [US7] Run the 100-question no-rerank versus rerank experiment and record quality, latency, resource, licensing, and operational findings in `docs/evaluation/phase7-reranking.md`.
 - [ ] T134 [US7] Record the evidence-based hybrid retrieval and reranking decisions in `docs/adr/ADR-010-hybrid-retrieval.md` and `docs/adr/ADR-017-reranking.md`.
-- [ ] T135 [US7] Update the frontend to display multi-source citations, partial coverage, and ambiguity outcomes in `frontend/src/features/chatbot/components/CitationList.tsx`, `frontend/src/features/chatbot/components/ResponseState.tsx`, and `frontend/src/features/chatbot/components/ClarificationPrompt.tsx`.
-- [ ] T136 [US7] Run the independent US7 validation with `backend/tests/unit/application/retrieval/test_multi_source_context.py`, `backend/tests/unit/application/retrieval/test_partial_and_ambiguous_answers.py`, `backend/tests/api/test_multi_source_chat.py`, and `frontend/tests/components/chatbot/multi-source-and-ambiguity.test.tsx`.
+- [X] T135 [US7] Update the frontend to display multi-source citations, partial coverage, and ambiguity outcomes in `frontend/src/features/chatbot/components/CitationList.tsx`, `frontend/src/features/chatbot/components/ResponseState.tsx`, and `frontend/src/features/chatbot/components/ClarificationPrompt.tsx`.
+- [X] T136 [US7] Run the independent US7 validation with `backend/tests/unit/application/retrieval/test_multi_source_context.py`, `backend/tests/unit/application/retrieval/test_partial_and_ambiguous_answers.py`, `backend/tests/api/test_multi_source_chat.py`, and `frontend/tests/components/chatbot/multi-source-and-ambiguity.test.tsx`.
 
 **Checkpoint**: Hybrid retrieval is measurable and configurable; multi-source answers cite
 supporting documents; ambiguity and partial coverage are explicit.
@@ -334,18 +334,18 @@ replacement before cutover and preserves the prior usable index on failure.
 **Independent test**: Index a document, delete it, verify it cannot be retrieved; then re-index
 a document with a forced failure and verify the prior index remains usable.
 
-- [ ] T137 [P] [US8] Add deletion tests for completed, completed-with-warning, failed, and active-ingestion states using the confirmed Q2 policy in `backend/tests/unit/application/ingestion/test_delete_document.py`.
-- [ ] T138 [P] [US8] Add vector cleanup and orphan-prevention integration tests in `backend/tests/integration/vector_store/test_document_cleanup.py`.
-- [ ] T139 [P] [US8] Add re-index atomic cutover, failure rollback, concurrent-query, and stale-index tests in `backend/tests/integration/ingestion/test_reindex_atomicity.py`.
-- [ ] T140 [P] [US8] Add API contract tests for delete, re-index, active-ingestion conflict, and cleanup failure in `backend/tests/api/test_document_lifecycle.py`.
-- [ ] T141 [P] [US8] Add frontend tests for delete confirmation, in-progress conflict, re-index progress, and failure recovery in `frontend/tests/components/configuration/document-lifecycle.test.tsx`.
-- [ ] T142 [US8] Implement deletion use case and confirmed active-ingestion conflict behavior in `backend/src/l1_support_bot/application/ingestion/delete_document.py`.
-- [ ] T143 [US8] Implement vector deletion, relational chunk cleanup, safe source-file deletion, and failure recovery in `backend/src/l1_support_bot/application/ingestion/cleanup_document.py`.
-- [ ] T144 [US8] Implement deterministic re-index staging, validation, atomic collection/namespace cutover, and old-index cleanup in `backend/src/l1_support_bot/application/ingestion/reindex_document.py` and `backend/src/l1_support_bot/infrastructure/vector_store/qdrant_index_manager.py`.
-- [ ] T145 [US8] Add delete and re-index routes, DTOs, status responses, and conflict errors in `backend/src/l1_support_bot/interface/api/routers/documents.py`, `backend/src/l1_support_bot/interface/api/routers/ingestion.py`, and `backend/src/l1_support_bot/interface/dto/document_lifecycle.py`.
-- [ ] T146 [US8] Add delete confirmation, re-index action, and lifecycle status UI in `frontend/src/features/configuration/components/DeleteDocumentDialog.tsx`, `frontend/src/features/configuration/components/ReindexDocumentButton.tsx`, and `frontend/src/features/configuration/pages/DocumentsPage.tsx`.
-- [ ] T147 [US8] Document index consistency, staging, cutover, rollback, and orphan cleanup in `docs/architecture/index-consistency.md`.
-- [ ] T148 [US8] Run the independent US8 validation with `backend/tests/unit/application/ingestion/test_delete_document.py`, `backend/tests/integration/ingestion/test_reindex_atomicity.py`, `backend/tests/integration/vector_store/test_document_cleanup.py`, and `backend/tests/api/test_document_lifecycle.py` for delete-after-index, the T013 deletion policy, rollback, cutover, and concurrent chat queries.
+- [X] T137 [P] [US8] Add deletion tests for completed, completed-with-warning, failed, and active-ingestion states using the confirmed Q2 policy in `backend/tests/unit/application/ingestion/test_delete_document.py`.
+- [X] T138 [P] [US8] Add vector cleanup and orphan-prevention integration tests in `backend/tests/integration/vector_store/test_document_cleanup.py`.
+- [X] T139 [P] [US8] Add re-index atomic cutover, failure rollback, concurrent-query, and stale-index tests in `backend/tests/integration/ingestion/test_reindex_atomicity.py`.
+- [X] T140 [P] [US8] Add API contract tests for delete, re-index, active-ingestion conflict, and cleanup failure in `backend/tests/api/test_document_lifecycle.py`.
+- [X] T141 [P] [US8] Add frontend tests for delete confirmation, in-progress conflict, re-index progress, and failure recovery in `frontend/tests/components/configuration/document-lifecycle.test.tsx`.
+- [X] T142 [US8] Implement deletion use case and confirmed active-ingestion conflict behavior in `backend/src/l1_support_bot/application/ingestion/delete_document.py`.
+- [X] T143 [US8] Implement vector deletion, relational chunk cleanup, safe source-file deletion, and failure recovery in `backend/src/l1_support_bot/application/ingestion/cleanup_document.py`.
+- [X] T144 [US8] Implement deterministic re-index staging, validation, atomic collection/namespace cutover, and old-index cleanup in `backend/src/l1_support_bot/application/ingestion/reindex_document.py` and `backend/src/l1_support_bot/infrastructure/vector_store/qdrant_index_manager.py`.
+- [X] T145 [US8] Add delete and re-index routes, DTOs, status responses, and conflict errors in `backend/src/l1_support_bot/interface/api/routers/documents.py`, `backend/src/l1_support_bot/interface/api/routers/ingestion.py`, and `backend/src/l1_support_bot/interface/dto/document_lifecycle.py`.
+- [X] T146 [US8] Add delete confirmation, re-index action, and lifecycle status UI in `frontend/src/features/configuration/components/DeleteDocumentDialog.tsx`, `frontend/src/features/configuration/components/ReindexDocumentButton.tsx`, and `frontend/src/features/configuration/pages/DocumentsPage.tsx`.
+- [X] T147 [US8] Document index consistency, staging, cutover, rollback, and orphan cleanup in `docs/architecture/index-consistency.md`.
+- [X] T148 [US8] Run the independent US8 validation with `backend/tests/unit/application/ingestion/test_delete_document.py`, `backend/tests/integration/ingestion/test_reindex_atomicity.py`, `backend/tests/integration/vector_store/test_document_cleanup.py`, and `backend/tests/api/test_document_lifecycle.py` for delete-after-index, the T013 deletion policy, rollback, cutover, and concurrent chat queries.
 
 **Checkpoint**: Deleted documents are not retrievable; re-indexing never exposes a partial
 or mixed index; failed re-indexing preserves the previous usable index.
@@ -362,17 +362,17 @@ and feedback is stored for review without changing system behavior automatically
 **Independent test**: Submit feedback for an answer, verify the response, persisted context,
 and unchanged subsequent behavior.
 
-- [ ] T149 [P] [US9] Add feedback domain validation tests for rating, comment length, required answer linkage, and no-auto-update invariant in `backend/tests/unit/application/feedback/test_feedback_validation.py`.
-- [ ] T150 [P] [US9] Add feedback persistence integration tests for question, answer, session, citations, configuration snapshot, and timestamp in `backend/tests/integration/persistence/test_feedback_repository.py`.
-- [ ] T151 [P] [US9] Add feedback API contract tests in `backend/tests/api/test_feedback.py`.
-- [ ] T152 [P] [US9] Add frontend feedback control, optional comment, disabled-submit, and confirmation tests in `frontend/tests/components/chatbot/feedback.test.tsx`.
-- [ ] T153 [P] [US9] Define the Feedback domain model and repository port in `backend/src/l1_support_bot/domain/models/feedback.py` and `backend/src/l1_support_bot/domain/ports/feedback_repository.py`.
-- [ ] T154 [US9] Add the feedback persistence migration and repository implementation in `backend/alembic/versions/005_feedback.py` and `backend/src/l1_support_bot/infrastructure/persistence/sqlalchemy/feedback_repository.py`.
-- [ ] T155 [US9] Implement `SubmitFeedback` enrichment and persistence in `backend/src/l1_support_bot/application/feedback/submit_feedback.py`, including retrieved chunk IDs and configuration identifiers where available.
-- [ ] T156 [US9] Implement the feedback request/response DTO and route in `backend/src/l1_support_bot/interface/dto/feedback.py` and `backend/src/l1_support_bot/interface/api/routers/feedback.py`.
-- [ ] T157 [US9] Implement feedback controls and confirmation state in `frontend/src/features/chatbot/components/FeedbackForm.tsx` and `frontend/src/features/chatbot/components/MessageBubble.tsx`.
-- [ ] T158 [US9] Document supervised feedback use and the prohibition on automatic prompt, model, retrieval, or knowledge-base changes in `docs/architecture/feedback.md`.
-- [ ] T159 [US9] Run the independent US9 validation with `backend/tests/integration/persistence/test_feedback_repository.py`, `backend/tests/api/test_feedback.py`, and `frontend/tests/components/chatbot/feedback.test.tsx`, verifying feedback persistence plus unchanged chatbot configuration and answer behavior.
+- [X] T149 [P] [US9] Add feedback domain validation tests for rating, comment length, required answer linkage, and no-auto-update invariant in `backend/tests/unit/application/feedback/test_feedback_validation.py`.
+- [X] T150 [P] [US9] Add feedback persistence integration tests for question, answer, session, citations, configuration snapshot, and timestamp in `backend/tests/integration/persistence/test_feedback_repository.py`.
+- [X] T151 [P] [US9] Add feedback API contract tests in `backend/tests/api/test_feedback.py`.
+- [X] T152 [P] [US9] Add frontend feedback control, optional comment, disabled-submit, and confirmation tests in `frontend/tests/components/chatbot/feedback.test.tsx`.
+- [X] T153 [P] [US9] Define the Feedback domain model and repository port in `backend/src/l1_support_bot/domain/models/feedback.py` and `backend/src/l1_support_bot/domain/ports/feedback_repository.py`.
+- [X] T154 [US9] Add the feedback persistence migration and repository implementation in `backend/alembic/versions/005_feedback.py` and `backend/src/l1_support_bot/infrastructure/persistence/sqlalchemy/feedback_repository.py`.
+- [X] T155 [US9] Implement `SubmitFeedback` enrichment and persistence in `backend/src/l1_support_bot/application/feedback/submit_feedback.py`, including retrieved chunk IDs and configuration identifiers where available.
+- [X] T156 [US9] Implement the feedback request/response DTO and route in `backend/src/l1_support_bot/interface/dto/feedback.py` and `backend/src/l1_support_bot/interface/api/routers/feedback.py`.
+- [X] T157 [US9] Implement feedback controls and confirmation state in `frontend/src/features/chatbot/components/FeedbackForm.tsx` and `frontend/src/features/chatbot/components/MessageBubble.tsx`.
+- [X] T158 [US9] Document supervised feedback use and the prohibition on automatic prompt, model, retrieval, or knowledge-base changes in `docs/architecture/feedback.md`.
+- [X] T159 [US9] Run the independent US9 validation with `backend/tests/integration/persistence/test_feedback_repository.py`, `backend/tests/api/test_feedback.py`, and `frontend/tests/components/chatbot/feedback.test.tsx`, verifying feedback persistence plus unchanged chatbot configuration and answer behavior.
 
 **Checkpoint**: Feedback is captured reliably, linked to the answer context, and has no
 automatic effect on system behavior.
@@ -389,17 +389,17 @@ continues in explicit read-only degraded mode when optional metadata persistence
 **Independent test**: Simulate LLM, vector store, and metadata persistence failures separately;
 verify safe error or degraded response for each.
 
-- [ ] T160 [P] [US10] Add application tests for LLM unavailable, embedding unavailable, vector store unavailable, database unavailable, timeout, retry exhaustion, and no-fabrication fallback in `backend/tests/unit/application/test_failure_boundaries.py`.
-- [ ] T161 [P] [US10] Add API tests for sanitized error schemas, status codes, request IDs, and degraded health payloads in `backend/tests/api/test_error_handling.py`.
-- [ ] T162 [P] [US10] Add degraded-mode integration tests for cached runtime configuration, indexed answering, read-only restrictions, and recovery in `backend/tests/integration/degraded_mode/test_oracle_unavailable.py`.
-- [ ] T163 [P] [US10] Add frontend tests for service-unavailable, limited-mode banner, retry, and disabled configuration operations in `frontend/tests/components/shared/failure-states.test.tsx`.
-- [ ] T164 [P] [US10] Implement safe infrastructure error mapping and retry boundary utilities in `backend/src/l1_support_bot/application/shared/retry_policy.py` and `backend/src/l1_support_bot/application/shared/failure_mapping.py`.
-- [ ] T165 [US10] Implement runtime configuration cache loading, health state, and explicit degraded-mode capability checks in `backend/src/l1_support_bot/infrastructure/configuration/runtime_config_cache.py` and `backend/src/l1_support_bot/application/configuration/runtime_health.py`.
-- [ ] T166 [US10] Update the chat use case and API dependencies to answer from cached configuration only when retrieval and LLM are available, while rejecting persistence-dependent mutations in `backend/src/l1_support_bot/application/retrieval/ask_question.py` and `backend/src/l1_support_bot/interface/dependencies.py`.
-- [ ] T167 [US10] Add degraded capability status to health and API responses in `backend/src/l1_support_bot/interface/api/routers/health.py` and `backend/src/l1_support_bot/interface/dto/health.py`.
-- [ ] T168 [US10] Add safe failure logging with error categories, durations, and no sensitive content in `backend/src/l1_support_bot/interface/logging.py` and affected application modules.
-- [ ] T169 [US10] Implement user-facing failure, retry, and limited-mode presentation in `frontend/src/shared/api/error-handler.ts`, `frontend/src/shared/components/DegradedModeBanner.tsx`, and `frontend/src/features/chatbot/components/ResponseState.tsx`.
-- [ ] T170 [US10] Run the independent US10 validation matrix with `backend/tests/unit/application/test_failure_boundaries.py`, `backend/tests/api/test_error_handling.py`, `backend/tests/integration/degraded_mode/test_oracle_unavailable.py`, and `frontend/tests/components/shared/failure-states.test.tsx`.
+- [X] T160 [P] [US10] Add application tests for LLM unavailable, embedding unavailable, vector store unavailable, database unavailable, timeout, retry exhaustion, and no-fabrication fallback in `backend/tests/unit/application/test_failure_boundaries.py`.
+- [X] T161 [P] [US10] Add API tests for sanitized error schemas, status codes, request IDs, and degraded health payloads in `backend/tests/api/test_error_handling.py`.
+- [X] T162 [P] [US10] Add degraded-mode integration tests for cached runtime configuration, indexed answering, read-only restrictions, and recovery in `backend/tests/integration/degraded_mode/test_oracle_unavailable.py`.
+- [X] T163 [P] [US10] Add frontend tests for service-unavailable, limited-mode banner, retry, and disabled configuration operations in `frontend/tests/components/shared/failure-states.test.tsx`.
+- [X] T164 [P] [US10] Implement safe infrastructure error mapping and retry boundary utilities in `backend/src/l1_support_bot/application/shared/retry_policy.py` and `backend/src/l1_support_bot/application/shared/failure_mapping.py`.
+- [X] T165 [US10] Implement runtime configuration cache loading, health state, and explicit degraded-mode capability checks in `backend/src/l1_support_bot/infrastructure/configuration/runtime_config_cache.py` and `backend/src/l1_support_bot/application/configuration/runtime_health.py`.
+- [X] T166 [US10] Update the chat use case and API dependencies to answer from cached configuration only when retrieval and LLM are available, while rejecting persistence-dependent mutations in `backend/src/l1_support_bot/application/retrieval/ask_question.py` and `backend/src/l1_support_bot/interface/dependencies.py`.
+- [X] T167 [US10] Add degraded capability status to health and API responses in `backend/src/l1_support_bot/interface/api/routers/health.py` and `backend/src/l1_support_bot/interface/dto/health.py`.
+- [X] T168 [US10] Add safe failure logging with error categories, durations, and no sensitive content in `backend/src/l1_support_bot/interface/logging.py` and affected application modules.
+- [X] T169 [US10] Implement user-facing failure, retry, and limited-mode presentation in `frontend/src/shared/api/error-handler.ts`, `frontend/src/shared/components/DegradedModeBanner.tsx`, and `frontend/src/features/chatbot/components/ResponseState.tsx`.
+- [X] T170 [US10] Run the independent US10 validation matrix with `backend/tests/unit/application/test_failure_boundaries.py`, `backend/tests/api/test_error_handling.py`, `backend/tests/integration/degraded_mode/test_oracle_unavailable.py`, and `frontend/tests/components/shared/failure-states.test.tsx`.
 
 **Checkpoint**: No infrastructure failure produces a fabricated answer; degraded mode is
 explicit, read-only for mutations, and communicated without internal details.
@@ -417,16 +417,16 @@ configuration, and autonomous actions are not exposed or executed.
 **Independent test**: Submit user and document injection fixtures and verify grounding,
 non-disclosure, and no command execution behavior.
 
-- [ ] T171 [P] [US11] Add user-query injection tests for instruction override, system-prompt disclosure, general-knowledge requests, command requests, and configuration disclosure in `backend/tests/unit/application/security/test_query_prompt_injection.py`.
-- [ ] T172 [P] [US11] Add document-content injection tests for embedded instructions, malicious markup, executable-looking content, and passive-reference framing in `backend/tests/integration/security/test_document_prompt_injection.py`.
-- [ ] T173 [P] [US11] Add API tests verifying secrets, prompts, internal metadata, and stack traces never appear in responses in `backend/tests/api/test_security_disclosure.py`.
-- [ ] T174 [P] [US11] Add frontend tests ensuring system prompt, secrets, infrastructure configuration, and internal errors are not rendered in `frontend/tests/components/security/non-disclosure.test.tsx`.
-- [ ] T175 [P] [US11] Implement bounded query normalization and injection-pattern categorization in `backend/src/l1_support_bot/application/security/query_sanitizer.py`; preserve the original user intent without logging raw query content.
-- [ ] T176 [US11] Harden context framing and versioned system prompt instructions in `backend/src/l1_support_bot/infrastructure/prompts/system_prompt_v1.txt` and `backend/src/l1_support_bot/application/retrieval/prompt_builder.py`.
-- [ ] T177 [US11] Add response disclosure checks and safe rejection behavior in `backend/src/l1_support_bot/application/security/response_disclosure_validator.py`.
-- [ ] T178 [US11] Verify all document parsers and storage paths do not execute embedded files, macros, links, or document instructions in `backend/src/l1_support_bot/infrastructure/parsing/` and `backend/src/l1_support_bot/infrastructure/file_storage/`.
-- [ ] T179 [US11] Add adversarial prompt-injection cases to `backend/tests/eval/security_cases.json` and record deterministic and human-reviewed results in `docs/evaluation/security-injection-results.md`.
-- [ ] T180 [US11] Run the independent US11 security validation with `backend/tests/unit/application/security/test_query_prompt_injection.py`, `backend/tests/integration/security/test_document_prompt_injection.py`, `backend/tests/api/test_security_disclosure.py`, and `frontend/tests/components/security/non-disclosure.test.tsx`, confirming SC-021.
+- [X] T171 [P] [US11] Add user-query injection tests for instruction override, system-prompt disclosure, general-knowledge requests, command requests, and configuration disclosure in `backend/tests/unit/application/security/test_query_prompt_injection.py`.
+- [X] T172 [P] [US11] Add document-content injection tests for embedded instructions, malicious markup, executable-looking content, and passive-reference framing in `backend/tests/integration/security/test_document_prompt_injection.py`.
+- [X] T173 [P] [US11] Add API tests verifying secrets, prompts, internal metadata, and stack traces never appear in responses in `backend/tests/api/test_security_disclosure.py`.
+- [X] T174 [P] [US11] Add frontend tests ensuring system prompt, secrets, infrastructure configuration, and internal errors are not rendered in `frontend/tests/components/security/non-disclosure.test.tsx`.
+- [X] T175 [P] [US11] Implement bounded query normalization and injection-pattern categorization in `backend/src/l1_support_bot/application/security/query_sanitizer.py`; preserve the original user intent without logging raw query content.
+- [X] T176 [US11] Harden context framing and versioned system prompt instructions in `backend/src/l1_support_bot/infrastructure/prompts/system_prompt_v1.txt` and `backend/src/l1_support_bot/application/retrieval/prompt_builder.py`.
+- [X] T177 [US11] Add response disclosure checks and safe rejection behavior in `backend/src/l1_support_bot/application/security/response_disclosure_validator.py`.
+- [X] T178 [US11] Verify all document parsers and storage paths do not execute embedded files, macros, links, or document instructions in `backend/src/l1_support_bot/infrastructure/parsing/` and `backend/src/l1_support_bot/infrastructure/file_storage/`.
+- [X] T179 [US11] Add adversarial prompt-injection cases to `backend/tests/eval/security_cases.json` and record deterministic and human-reviewed results in `docs/evaluation/security-injection-results.md`.
+- [X] T180 [US11] Run the independent US11 security validation with `backend/tests/unit/application/security/test_query_prompt_injection.py`, `backend/tests/integration/security/test_document_prompt_injection.py`, `backend/tests/api/test_security_disclosure.py`, and `frontend/tests/components/security/non-disclosure.test.tsx`, confirming SC-021.
 
 **Checkpoint**: Documents remain passive reference material; user instructions cannot change
 system behavior; no unauthorized execution capability exists.
@@ -443,19 +443,19 @@ exposing secrets; incompatible embedding changes require explicit re-index handl
 **Independent test**: View masked settings, save a valid retrieval change, reject an unreachable
 LLM endpoint, and require re-index confirmation for an embedding model change.
 
-- [ ] T181 [P] [US12] Add configuration validation unit tests for LLM, embedding, retrieval, chunking, timeout, retry, threshold, weight, and compatibility rules in `backend/tests/unit/application/configuration/test_configuration_validation.py`.
-- [ ] T182 [P] [US12] Add configuration API contract tests for masked secrets, connectivity validation, invalid values, rollback-on-failure, and re-index warnings in `backend/tests/api/test_configuration.py`.
-- [ ] T183 [P] [US12] Add frontend configuration-form tests for validation, masked credentials, connectivity errors, compatibility warnings, and save confirmation in `frontend/tests/components/configuration/ai-configuration.test.tsx`.
-- [ ] T184 [P] [US12] Define LLM, embedding, retrieval, and chunking configuration domain models in `backend/src/l1_support_bot/domain/models/configuration.py`.
-- [ ] T185 [US12] Implement configuration repositories and migrations for LLM, embedding, retrieval, and chunking settings in `backend/src/l1_support_bot/infrastructure/persistence/sqlalchemy/configuration_repository.py` and `backend/alembic/versions/006_ai_rag_configuration.py`.
-- [ ] T186 [US12] Implement LLM and embedding connectivity validation use cases in `backend/src/l1_support_bot/application/configuration/validate_llm.py` and `backend/src/l1_support_bot/application/configuration/validate_embedding.py`.
-- [ ] T187 [US12] Implement transactional configuration activation with rollback on validation failure in `backend/src/l1_support_bot/application/configuration/update_configuration.py`.
-- [ ] T188 [US12] Implement explicit embedding and chunking re-index requirement checks in `backend/src/l1_support_bot/application/configuration/validate_index_compatibility.py`.
-- [ ] T189 [US12] Implement configuration DTOs and GET/PUT/validate routes in `backend/src/l1_support_bot/interface/dto/configuration.py` and `backend/src/l1_support_bot/interface/api/routers/configuration.py`.
-- [ ] T190 [US12] Implement the Configuration AI settings pages and forms in `frontend/src/features/configuration/pages/AIConfigPage.tsx`, `frontend/src/features/configuration/components/LLMConfigForm.tsx`, `frontend/src/features/configuration/components/EmbeddingConfigForm.tsx`, and `frontend/src/features/configuration/components/RetrievalConfigForm.tsx`.
-- [ ] T191 [US12] Add safe masked-secret display and re-index warning UI in `frontend/src/features/configuration/components/MaskedSecretField.tsx` and `frontend/src/features/configuration/components/ReindexWarning.tsx`.
-- [ ] T192 [US12] Document configuration precedence, runtime/restart behavior, compatibility, rollback, and secret handling in `docs/architecture/configuration.md`.
-- [ ] T193 [US12] Run the independent US12 validation with `backend/tests/unit/application/configuration/test_configuration_validation.py`, `backend/tests/api/test_configuration.py`, and `frontend/tests/components/configuration/ai-configuration.test.tsx` for valid changes, rejected changes, endpoint failures, masked values, and embedding compatibility warnings.
+- [X] T181 [P] [US12] Add configuration validation unit tests for LLM, embedding, retrieval, chunking, timeout, retry, threshold, weight, and compatibility rules in `backend/tests/unit/application/configuration/test_configuration_validation.py`.
+- [X] T182 [P] [US12] Add configuration API contract tests for masked secrets, connectivity validation, invalid values, rollback-on-failure, and re-index warnings in `backend/tests/api/test_configuration.py`.
+- [X] T183 [P] [US12] Add frontend configuration-form tests for validation, masked credentials, connectivity errors, compatibility warnings, and save confirmation in `frontend/tests/components/configuration/ai-configuration.test.tsx`.
+- [X] T184 [P] [US12] Define LLM, embedding, retrieval, and chunking configuration domain models in `backend/src/l1_support_bot/domain/models/configuration.py`.
+- [X] T185 [US12] Implement configuration repositories and migrations for LLM, embedding, retrieval, and chunking settings in `backend/src/l1_support_bot/infrastructure/persistence/sqlalchemy/configuration_repository.py` and `backend/alembic/versions/006_ai_rag_configuration.py`.
+- [X] T186 [US12] Implement LLM and embedding connectivity validation use cases in `backend/src/l1_support_bot/application/configuration/validate_llm.py` and `backend/src/l1_support_bot/application/configuration/validate_embedding.py`.
+- [X] T187 [US12] Implement transactional configuration activation with rollback on validation failure in `backend/src/l1_support_bot/application/configuration/update_configuration.py`.
+- [X] T188 [US12] Implement explicit embedding and chunking re-index requirement checks in `backend/src/l1_support_bot/application/configuration/validate_index_compatibility.py`.
+- [X] T189 [US12] Implement configuration DTOs and GET/PUT/validate routes in `backend/src/l1_support_bot/interface/dto/configuration.py` and `backend/src/l1_support_bot/interface/api/routers/configuration.py`.
+- [X] T190 [US12] Implement the Configuration AI settings pages and forms in `frontend/src/features/configuration/pages/AIConfigPage.tsx`, `frontend/src/features/configuration/components/LLMConfigForm.tsx`, `frontend/src/features/configuration/components/EmbeddingConfigForm.tsx`, `frontend/src/features/configuration/components/RetrievalConfigForm.tsx`, and `frontend/src/features/configuration/components/ChunkingConfigForm.tsx`.
+- [X] T191 [US12] Add safe masked-secret display and re-index warning UI in `frontend/src/features/configuration/components/MaskedSecretField.tsx` and `frontend/src/features/configuration/components/ReindexWarning.tsx`.
+- [X] T192 [US12] Document configuration precedence, runtime/restart behavior, compatibility, rollback, and secret handling in `docs/architecture/configuration.md`.
+- [X] T193 [US12] Run the independent US12 validation with `backend/tests/unit/application/configuration/test_configuration_validation.py`, `backend/tests/api/test_configuration.py`, and `frontend/tests/components/configuration/ai-configuration.test.tsx` for valid changes, rejected changes, endpoint failures, masked values, and embedding compatibility warnings.
 
 **Checkpoint**: Configuration changes are validated before activation; failed changes do not
 replace active configuration; secrets are never returned or displayed.

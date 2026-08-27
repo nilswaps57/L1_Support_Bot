@@ -1,0 +1,13 @@
+{
+  "fixture": "synthetic-flexcube-insufficient-information-v1",
+  "cases": [
+    {"id": "known-task-code", "question": "What is task code BA435?", "expected_answer_type": "GROUNDED", "expected_citations": true},
+    {"id": "no-result", "question": "What is the FLEXCUBE quantum settlement screen?", "expected_answer_type": "INSUFFICIENT", "expected_citations": false},
+    {"id": "low-score", "question": "What is the customer account screen?", "expected_answer_type": "INSUFFICIENT", "expected_citations": false},
+    {"id": "irrelevant-result", "question": "What is the customer account screen?", "expected_answer_type": "INSUFFICIENT", "expected_citations": false},
+    {"id": "exact-identifier", "question": "What is task code BA435?", "expected_answer_type": "GROUNDED", "expected_citations": true},
+    {"id": "partial-evidence", "question": "What does BA435 do and what is its approval workflow?", "expected_answer_type": "PARTIAL", "expected_citations": true},
+    {"id": "ambiguity", "question": "Which account screen should I use?", "expected_answer_type": "AMBIGUOUS", "expected_citations": false},
+    {"id": "incorrect-premise", "question": "Why does screen BA999 open the customer account?", "expected_answer_type": "INCORRECT_PREMISE", "expected_citations": false}
+  ]
+}

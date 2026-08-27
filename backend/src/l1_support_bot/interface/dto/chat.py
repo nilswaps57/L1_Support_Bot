@@ -5,6 +5,7 @@ from uuid import UUID
 from pydantic import BaseModel, Field
 
 from l1_support_bot.domain.models.answer import Answer
+from l1_support_bot.interface.dto.citations import CitationResponse
 
 
 class ChatRequest(BaseModel):
@@ -12,21 +13,11 @@ class ChatRequest(BaseModel):
     question: str
 
 
-class ChatCitation(BaseModel):
-    chunk_id: UUID
-    document_id: UUID
-    document_name: str
-    page_number: int | None = None
-    section: str | None = None
-    task_code: str | None = None
-    screen_name: str | None = None
-    source_type: str | None = None
-    error_code: str | None = None
-    jira_id: str | None = None
-    relevance_score: float | None = None
+ChatCitation = CitationResponse
 
 
 class ChatResponse(BaseModel):
+    answer_id: UUID
     session_id: UUID
     question: str
     answer_text: str
@@ -38,6 +29,7 @@ class ChatResponse(BaseModel):
     @classmethod
     def from_answer(cls, session_id: UUID, answer: Answer) -> "ChatResponse":
         return cls(
+            answer_id=answer.answer_id,
             session_id=session_id,
             question=answer.question,
             answer_text=answer.answer_text,

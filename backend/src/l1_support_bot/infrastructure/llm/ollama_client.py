@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import httpx
 
-from l1_support_bot.domain.errors import LLMUnavailableError
+from l1_support_bot.application.shared.retry_policy import RetryPolicy, run_with_retry
+from l1_support_bot.domain.errors import DomainError, LLMUnavailableError
 from l1_support_bot.domain.models.configuration import LLMConfig
 
 
@@ -27,24 +28,25 @@ class OllamaClient:
                     "num_ctx": config.context_window,
                 },
             }
-            for attempt in range(config.max_retries + 1):
-                try:
-                    response = await client.post(
-                        f"{config.endpoint.rstrip('/')}/api/generate", json=request
-                    )
-                    response.raise_for_status()
-                    value = response.json().get("response")
-                    if not isinstance(value, str) or not value.strip():
-                        raise LLMUnavailableError(
-                            "Answer generation is temporarily unavailable."
-                        )
-                    return value
-                except (httpx.HTTPError, ValueError, KeyError, TypeError):
-                    if attempt == config.max_retries:
-                        raise
-            raise LLMUnavailableError("Answer generation is temporarily unavailable.")
+            async def request_once() -> str:
+                response = await client.post(
+                    f"{config.endpoint.rstrip('/')}/api/generate", json=request
+                )
+                response.raise_for_status()
+                value = response.json().get("response")
+                if not isinstance(value, str) or not value.strip():
+                    raise ValueError("invalid model response")
+                return value
+
+            return await run_with_retry(
+                request_once,
+                policy=RetryPolicy(max_attempts=config.max_retries + 1),
+                idempotent=True,
+            )
         except LLMUnavailableError:
             raise
+        except DomainError as exc:
+            raise LLMUnavailableError() from exc
         except (httpx.HTTPError, ValueError, KeyError, TypeError) as exc:
             raise LLMUnavailableError("Answer generation is temporarily unavailable.") from exc
         finally:

@@ -15,3 +15,4 @@ class HealthResponse(BaseModel):
     llm: ComponentStatus
     embedding: ComponentStatus
     degraded_capabilities: list[str] = Field(default_factory=list)
+    capabilities: dict[str, bool] = Field(default_factory=dict)

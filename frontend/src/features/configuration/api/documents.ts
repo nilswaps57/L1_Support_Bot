@@ -43,6 +43,17 @@ export type UploadAccepted = {
   checksum: string;
 };
 
+export type DocumentLifecycleResponse = {
+  document_id: string;
+  status: string;
+};
+
+export type ReindexAccepted = {
+  document_id: string;
+  job_id: string;
+  status: string;
+};
+
 export async function listDocuments(): Promise<DocumentListResponse> {
   return apiClient.request<DocumentListResponse>("/documents");
 }
@@ -65,5 +76,17 @@ export async function uploadDocument(
   return apiClient.request<UploadAccepted>("/documents/upload", {
     method: "POST",
     body: formData,
+  });
+}
+
+export async function deleteDocument(documentId: string): Promise<DocumentLifecycleResponse> {
+  return apiClient.request<DocumentLifecycleResponse>(`/documents/${documentId}`, {
+    method: "DELETE",
+  });
+}
+
+export async function reindexDocument(documentId: string): Promise<ReindexAccepted> {
+  return apiClient.request<ReindexAccepted>(`/ingestion/${documentId}/reindex`, {
+    method: "POST",
   });
 }

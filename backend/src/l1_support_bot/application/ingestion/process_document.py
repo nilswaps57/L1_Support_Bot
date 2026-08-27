@@ -139,7 +139,17 @@ class ProcessDocument:
         ):
             raise ProcessingError("Embedding generation returned incompatible vectors.")
         current = await self._transition(document.id, current, IngestionStatus.INDEXING)
-        await self.vector_store.upsert(prepared, vectors)
+        try:
+            await self.vector_store.upsert(prepared, vectors)
+        except Exception:
+            try:
+                await self.vector_store.delete_by_document(document.id)
+                await self.chunks.delete_by_document(document.id)
+            except Exception as cleanup_error:
+                raise ProcessingError(
+                    "Indexing failed and partial index cleanup could not be verified."
+                ) from cleanup_error
+            raise
         current = current.with_progress(
             status=(
                 IngestionStatus.COMPLETED_WITH_WARNING

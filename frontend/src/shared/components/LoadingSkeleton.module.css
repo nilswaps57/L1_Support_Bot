@@ -1,0 +1,43 @@
+.skeleton {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+}
+
+.block,
+.blockShort {
+  display: block;
+  height: 0.9rem;
+  border-radius: var(--radius-control);
+  background: var(--color-surface-muted);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.blockShort {
+  width: 42%;
+}
+
+.conversation {
+  min-height: 11rem;
+}
+
+.table {
+  min-height: 14rem;
+}
+
+.detail {
+  min-height: 12rem;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}

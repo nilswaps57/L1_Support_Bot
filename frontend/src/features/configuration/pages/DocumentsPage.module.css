@@ -1,0 +1,19 @@
+.page {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.uploadRegion,
+.documentsRegion {
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+}
+
+@media (max-width: 639px) {
+  .uploadRegion,
+  .documentsRegion {
+    padding: var(--space-4);
+  }
+}

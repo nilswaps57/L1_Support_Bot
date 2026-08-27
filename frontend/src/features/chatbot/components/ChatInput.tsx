@@ -1,4 +1,5 @@
 import { type FormEvent, useState } from "react";
+import styles from "./ChatInput.module.css";
 
 export function ChatInput({ onSubmit, disabled = false }: { onSubmit: (question: string) => void; disabled?: boolean }) {
   const [question, setQuestion] = useState("");
@@ -11,9 +12,11 @@ export function ChatInput({ onSubmit, disabled = false }: { onSubmit: (question:
   }
 
   return (
-    <form onSubmit={submit}>
-      <label htmlFor="chat-question">Question</label>
+    <form className={styles.form} onSubmit={submit}>
+      <div className={styles.labelGroup}>
+        <label className={styles.label} htmlFor="chat-question">Question</label>
       <textarea
+        className={styles.textarea}
         id="chat-question"
         name="question"
         value={question}
@@ -21,7 +24,11 @@ export function ChatInput({ onSubmit, disabled = false }: { onSubmit: (question:
         disabled={disabled}
         rows={3}
       />
-      <button type="submit" disabled={disabled || !question.trim()}>Ask</button>
+        <p className={styles.helper}>Ask about a FLEXCUBE task, screen, procedure, or error.</p>
+      </div>
+      <button className={styles.askButton} type="submit" disabled={disabled || !question.trim()}>
+        {disabled ? "Ask" : "Ask"}
+      </button>
     </form>
   );
 }

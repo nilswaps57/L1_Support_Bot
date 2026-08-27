@@ -14,6 +14,7 @@ class KnowledgeChunkModel(Base):
         Index("ix_knowledge_chunks_document_id", "document_id"),
         Index("ix_knowledge_chunks_task_code", "task_code"),
         Index("ix_knowledge_chunks_error_code", "error_code"),
+        Index("ix_knowledge_chunks_index_generation_id", "index_generation_id"),
     )
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True)
@@ -44,6 +45,7 @@ class KnowledgeChunkModel(Base):
     element_type: Mapped[str] = mapped_column(String(30), nullable=False)
     embedding_model_id: Mapped[str | None] = mapped_column(String(200), nullable=True)
     indexed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    index_generation_id: Mapped[str | None] = mapped_column(String(300), nullable=True)
 
 
 class IngestionDiagnosticModel(Base):
