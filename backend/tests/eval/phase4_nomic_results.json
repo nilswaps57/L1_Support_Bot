@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "fixture_id": "synthetic-flexcube-definitions-v1",
+  "model": "nomic-embed-text",
+  "questions": 50,
+  "chunks": 12,
+  "batch_latency_ms": 4266.925395000044,
+  "vector_dimensions": 768,
+  "modes": {
+    "dense_only": {
+      "recall_at_5": 0.96,
+      "recall_at_10": 1,
+      "mrr": 0.8366666666666667,
+      "exact_identifier_hit_rate": 0.86,
+      "query_latency_ms": 173.7608513799887
+    },
+    "hybrid": {
+      "recall_at_5": 1,
+      "recall_at_10": 1,
+      "mrr": 0.84,
+      "exact_identifier_hit_rate": 0.96,
+      "query_latency_ms": 202.328405140006
+    }
+  }
+}

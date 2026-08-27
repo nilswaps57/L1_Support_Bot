@@ -1,0 +1,204 @@
+{
+  "document": {
+    "title": "FLEXCUBE Definitions User Manual",
+    "release_identifier": "SYNTH-FC-REL14-QA",
+    "fixture_kind": "synthetic"
+  },
+  "expected": {
+    "task_codes": [
+      "BA431",
+      "BA435",
+      "BA436"
+    ],
+    "screen_names": [
+      "Customer Profile Definition",
+      "Account Maintenance Definition",
+      "Service Request Definition"
+    ],
+    "menu_paths": [
+      "Main Menu > Customer Management > Customer Profile",
+      "Main Menu > Account Services > Account Maintenance",
+      "Main Menu > Servicing > Service Request"
+    ],
+    "prerequisites": {
+      "BA431": [
+        "ST001",
+        "ST002"
+      ],
+      "BA435": [
+        "BA431"
+      ],
+      "BA436": [
+        "BA435"
+      ]
+    },
+    "modes": {
+      "BA431": [
+        "New",
+        "Inquiry",
+        "Modify"
+      ],
+      "BA435": [
+        "Inquiry",
+        "Modify",
+        "Authorize"
+      ],
+      "BA436": [
+        "Inquiry",
+        "Create",
+        "Close"
+      ]
+    },
+    "fields": {
+      "BA431": [
+        {
+          "name": "Customer ID",
+          "description": "Unique identifier assigned to the customer profile."
+        },
+        {
+          "name": "Customer Name",
+          "description": "Full name displayed in customer searches and notices."
+        },
+        {
+          "name": "Customer Type",
+          "description": "Classifies the profile for servicing rules."
+        },
+        {
+          "name": "Short Name",
+          "description": "Compact label used in lists and lookup results."
+        }
+      ],
+      "BA435": [
+        {
+          "name": "Account Number",
+          "description": "Identifier of the account selected for maintenance."
+        },
+        {
+          "name": "Customer ID",
+          "description": "Links the account to its owning customer profile."
+        },
+        {
+          "name": "Product Code",
+          "description": "Identifies the account product and its rules."
+        },
+        {
+          "name": "Account Status",
+          "description": "Shows whether the account can accept servicing changes."
+        }
+      ],
+      "BA436": [
+        {
+          "name": "Request Number",
+          "description": "Reference generated for the service request."
+        },
+        {
+          "name": "Account Number",
+          "description": "Account for which the request is submitted."
+        },
+        {
+          "name": "Request Type",
+          "description": "Classifies the customer service action."
+        },
+        {
+          "name": "Request Status",
+          "description": "Tracks the request through completion."
+        }
+      ]
+    },
+    "procedure_steps": [
+      "Open Customer Profile Definition from the stated menu path.",
+      "Choose New mode and enter the required customer fields.",
+      "Save the profile and confirm the generated Customer ID."
+    ],
+    "notes_and_warnings": [
+      {
+        "section": "BA431 - Customer Profile Definition",
+        "kind": "note",
+        "text": "A profile cannot be saved until Customer ID, Customer Name, and Customer Type are present."
+      },
+      {
+        "section": "BA435 - Account Maintenance Definition",
+        "kind": "warning",
+        "text": "Modify mode changes take effect only after an authorized user approves the record."
+      },
+      {
+        "section": "BA436 - Service Request Definition",
+        "kind": "note",
+        "text": "Close mode is available only when the request has no pending approval."
+      }
+    ],
+    "page_markers": [
+      {
+        "source_page": 1,
+        "metadata_marker": "source-page: 1",
+        "section": "Document title"
+      },
+      {
+        "source_page": 2,
+        "metadata_marker": "source-page: 2",
+        "section": "BA431 - Customer Profile Definition"
+      },
+      {
+        "source_page": 3,
+        "metadata_marker": "source-page: 3",
+        "section": "BA435 - Account Maintenance Definition"
+      },
+      {
+        "source_page": 4,
+        "metadata_marker": "source-page: 4",
+        "section": "BA436 - Service Request Definition"
+      },
+      {
+        "source_page": 5,
+        "metadata_marker": "source-page: 5",
+        "section": "Retrieval landmarks"
+      }
+    ],
+    "related_screens": {
+      "BA431": [
+        "Customer Search",
+        "Customer Address"
+      ],
+      "BA435": [
+        "Customer Profile Definition",
+        "Account Authorization"
+      ],
+      "BA436": [
+        "Account Maintenance Definition",
+        "Request History"
+      ]
+    }
+  },
+  "evaluation_questions": [
+    {
+      "question": "Which screen is used to create a customer profile?",
+      "expected_relevant_section": "BA431 - Customer Profile Definition",
+      "expected_task_code": "BA431"
+    },
+    {
+      "question": "What menu path and modes are available for account maintenance?",
+      "expected_relevant_section": "BA435 - Account Maintenance Definition",
+      "expected_task_code": "BA435"
+    },
+    {
+      "question": "Which prerequisite task is required before opening a service request?",
+      "expected_relevant_section": "BA436 - Service Request Definition",
+      "expected_task_code": "BA436"
+    },
+    {
+      "question": "What does the Account Status field indicate?",
+      "expected_relevant_section": "BA435 - Account Maintenance Definition",
+      "expected_task_code": "BA435"
+    },
+    {
+      "question": "What are the ordered steps for creating a customer profile?",
+      "expected_relevant_section": "BA431 - Customer Profile Definition",
+      "expected_task_code": "BA431"
+    },
+    {
+      "question": "Which related screen supports account authorization?",
+      "expected_relevant_section": "BA435 - Account Maintenance Definition",
+      "expected_task_code": "BA435"
+    }
+  ]
+}

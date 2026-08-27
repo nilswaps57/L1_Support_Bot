@@ -1,0 +1,1 @@
+"""Persistent ingestion job infrastructure."""

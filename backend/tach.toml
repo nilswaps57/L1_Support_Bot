@@ -1,0 +1,17 @@
+source_roots = ["src"]
+
+[[modules]]
+path = "l1_support_bot/domain"
+depends_on = []
+
+[[modules]]
+path = "l1_support_bot/application"
+depends_on = ["l1_support_bot/domain"]
+
+[[modules]]
+path = "l1_support_bot/infrastructure"
+depends_on = ["l1_support_bot/domain"]
+
+[[modules]]
+path = "l1_support_bot/interface"
+depends_on = ["l1_support_bot/application", "l1_support_bot/domain"]

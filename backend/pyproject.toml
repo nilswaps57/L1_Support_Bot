@@ -1,0 +1,61 @@
+[project]
+name = "l1-support-bot"
+version = "0.1.0"
+description = "FLEXCUBE L1 Support Bot backend"
+requires-python = ">=3.11"
+dependencies = [
+    "alembic>=1.13,<2",
+    "aiosqlite>=0.20,<1",
+    "fastapi>=0.115,<1",
+    "httpx>=0.27,<1",
+    "pydantic-settings>=2.6,<3",
+    "python-multipart>=0.0.18,<1",
+    "sqlalchemy>=2.0,<3",
+    "structlog>=24.4,<26",
+    "docling>=2.122.0",
+    "pymupdf>=1.28.2",
+    "python-docx>=1.2.0",
+    "qdrant-client>=1.19.0",
+    "rank-bm25>=0.2.2",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.13,<2",
+    "pytest>=8.3,<9",
+    "pytest-asyncio>=0.24,<1",
+    "pytest-cov>=6,<7",
+    "ruff>=0.8,<1",
+    "tach>=0.30,<1",
+]
+
+[build-system]
+requires = ["setuptools>=75,<77"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+asyncio_mode = "auto"
+addopts = "--strict-markers"
+markers = ["integration: uses a local or opt-in infrastructure adapter"]
+
+[tool.coverage.run]
+source = ["l1_support_bot"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+mypy_path = "src"
+packages = ["l1_support_bot"]

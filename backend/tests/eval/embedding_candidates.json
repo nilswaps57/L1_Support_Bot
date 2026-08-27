@@ -1,0 +1,29 @@
+[
+  {
+    "provider": "ollama",
+    "model": "qwen3-embedding",
+    "model_version": "live",
+    "endpoint": "http://localhost:11434/v1",
+    "dimensions": 1024,
+    "licensing": "Apache-2.0 (verify model card before production use)",
+    "deployment": "local Ollama"
+  },
+  {
+    "provider": "ollama",
+    "model": "bge-m3",
+    "model_version": "live",
+    "endpoint": "http://localhost:11434/v1",
+    "dimensions": 1024,
+    "licensing": "MIT (verify model card before production use)",
+    "deployment": "local Ollama"
+  },
+  {
+    "provider": "ollama",
+    "model": "nomic-embed-text",
+    "model_version": "live",
+    "endpoint": "http://localhost:11434/v1",
+    "dimensions": 768,
+    "licensing": "Apache-2.0",
+    "deployment": "local Ollama"
+  }
+]
